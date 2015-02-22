@@ -30,9 +30,9 @@ import com.intellij.openapi.roots.ModuleRootLayer;
  * @author VISTALL
  * @since 22.02.2015
  */
-public class KMutableModuleExtension extends KModuleExtension implements DotNetSimpleMutableModuleExtension<KModuleExtension>
+public class KRuntimeMutableModuleExtension extends KRuntimeModuleExtension implements DotNetSimpleMutableModuleExtension<KRuntimeModuleExtension>
 {
-	public KMutableModuleExtension(@NotNull String id, @NotNull ModuleRootLayer rootModel)
+	public KRuntimeMutableModuleExtension(@NotNull String id, @NotNull ModuleRootLayer rootModel)
 	{
 		super(id, rootModel);
 	}
@@ -58,7 +58,7 @@ public class KMutableModuleExtension extends KModuleExtension implements DotNetS
 	}
 
 	@Override
-	public boolean isModified(@NotNull KModuleExtension kModuleExtension)
+	public boolean isModified(@NotNull KRuntimeModuleExtension kModuleExtension)
 	{
 		return isModifiedImpl(kModuleExtension);
 	}

@@ -33,6 +33,20 @@
               </binaries>
             </library>
           </orderEntry>
+          <orderEntry type="module-library">
+            <library name="consulo:JavaScript Support">
+              <binaries>
+                <root url="jar://$MODULE_DIR$/dep/javascript/lib/javascript.jar!/" />
+              </binaries>
+            </library>
+          </orderEntry>
+          <orderEntry type="module-library">
+            <library name="consulo:NuGet">
+              <binaries>
+                <root url="jar://$MODULE_DIR$/dep/nuget/lib/nuget.jar!/" />
+              </binaries>
+            </library>
+          </orderEntry>
         </module-layer>
       </module>
     </modules>

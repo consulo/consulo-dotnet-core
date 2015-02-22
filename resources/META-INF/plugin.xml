@@ -4,14 +4,22 @@
 	<version>SNAPSHOT</version>
 	<vendor>Must-Be.org</vendor>
 	<depends>org.mustbe.consulo.dotnet.core</depends>
+	<depends>org.mustbe.consulo.csharp</depends>
 
 	<extensions defaultExtensionNs="com.intellij">
-		<sdkType implementation="org.mustbe.consulo.kruntime.bundle.KRuntimeBundleType" />
+		<sdkType implementation="org.mustbe.consulo.kruntime.bundle.KRuntimeBundleType"/>
 
 		<moduleExtensionProvider key="k-runtime"
 								 name="K Runtime"
 								 icon="/icons/dotnetFoundation.png"
 								 immutableClass="org.mustbe.consulo.kruntime.module.extension.KModuleExtension"
-								 mutableClass="org.mustbe.consulo.kruntime.module.extension.KMutableModuleExtension" />
+								 mutableClass="org.mustbe.consulo.kruntime.module.extension.KMutableModuleExtension"/>
+
+		<moduleExtensionProvider key="k-runtime-csharp"
+								 parentKey="k-runtime"
+								 icon="/icons/dotnetFoundation.png"
+								 name="C#"
+								 immutableClass="org.mustbe.consulo.kruntime.csharp.module.extension.KRuntimeCSharpModuleExtension"
+								 mutableClass="org.mustbe.consulo.kruntime.csharp.module.extension.KRuntimeCSharpMutableModuleExtension"/>
 	</extensions>
 </idea-plugin>

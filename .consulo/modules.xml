@@ -23,6 +23,16 @@
               </binaries>
             </library>
           </orderEntry>
+          <orderEntry type="module-library">
+            <library name="consulo:C#">
+              <binaries>
+                <root url="jar://$MODULE_DIR$/dep/csharp/lib/csharp.jar!/" />
+                <root url="jar://$MODULE_DIR$/dep/csharp/lib/jel.jar!/" />
+                <root url="jar://$MODULE_DIR$/dep/csharp/lib/microsoft-csharp.jar!/" />
+                <root url="jar://$MODULE_DIR$/dep/csharp/lib/mono-csharp.jar!/" />
+              </binaries>
+            </library>
+          </orderEntry>
         </module-layer>
       </module>
     </modules>

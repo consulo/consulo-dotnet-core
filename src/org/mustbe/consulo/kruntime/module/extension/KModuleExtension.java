@@ -18,6 +18,8 @@ package org.mustbe.consulo.kruntime.module.extension;
 
 import org.jetbrains.annotations.NotNull;
 import org.mustbe.consulo.dotnet.module.extension.BaseDotNetSimpleModuleExtension;
+import org.mustbe.consulo.kruntime.bundle.KRuntimeBundleType;
+import com.intellij.openapi.projectRoots.SdkType;
 import com.intellij.openapi.roots.ModuleRootLayer;
 
 /**
@@ -29,5 +31,12 @@ public class KModuleExtension extends BaseDotNetSimpleModuleExtension<KModuleExt
 	public KModuleExtension(@NotNull String id, @NotNull ModuleRootLayer rootModel)
 	{
 		super(id, rootModel);
+	}
+
+	@NotNull
+	@Override
+	public Class<? extends SdkType> getSdkTypeClass()
+	{
+		return KRuntimeBundleType.class;
 	}
 }

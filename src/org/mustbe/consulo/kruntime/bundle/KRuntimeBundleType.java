@@ -122,7 +122,7 @@ public class KRuntimeBundleType extends SdkType
 	@Override
 	public String suggestSdkName(String currentSdkName, String sdkHome)
 	{
-		return getPresentableName() + " " + getVersionString(sdkHome);
+		return new File(sdkHome).getName();
 	}
 
 	@NotNull

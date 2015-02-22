@@ -18,27 +18,37 @@ package org.mustbe.consulo.kruntime.module.extension;
 
 import javax.swing.JComponent;
 
-import org.consulo.module.extension.MutableModuleExtension;
+import org.consulo.module.extension.MutableModuleInheritableNamedPointer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.mustbe.consulo.dotnet.module.extension.DotNetModuleExtensionWithSdkPanel;
+import org.mustbe.consulo.dotnet.module.extension.DotNetSimpleMutableModuleExtension;
+import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootLayer;
 
 /**
  * @author VISTALL
  * @since 22.02.2015
  */
-public class KMutableModuleExtension extends KModuleExtension implements MutableModuleExtension<KModuleExtension>
+public class KMutableModuleExtension extends KModuleExtension implements DotNetSimpleMutableModuleExtension<KModuleExtension>
 {
 	public KMutableModuleExtension(@NotNull String id, @NotNull ModuleRootLayer rootModel)
 	{
 		super(id, rootModel);
 	}
 
+	@NotNull
+	@Override
+	public MutableModuleInheritableNamedPointer<Sdk> getInheritableSdk()
+	{
+		return (MutableModuleInheritableNamedPointer<Sdk>) super.getInheritableSdk();
+	}
+
 	@Nullable
 	@Override
 	public JComponent createConfigurablePanel(@NotNull Runnable runnable)
 	{
-		return null;
+		return wrapToNorth(DotNetModuleExtensionWithSdkPanel.create(this, runnable));
 	}
 
 	@Override
@@ -50,6 +60,6 @@ public class KMutableModuleExtension extends KModuleExtension implements Mutable
 	@Override
 	public boolean isModified(@NotNull KModuleExtension kModuleExtension)
 	{
-		return myIsEnabled != kModuleExtension.isEnabled();
+		return isModifiedImpl(kModuleExtension);
 	}
 }

@@ -16,8 +16,10 @@
 
 package org.mustbe.consulo.kruntime.module.extension;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import org.consulo.lombok.annotations.LazyInstance;
 import org.jetbrains.annotations.NotNull;
@@ -25,13 +27,17 @@ import org.jetbrains.annotations.Nullable;
 import org.mustbe.consulo.dotnet.module.extension.BaseDotNetSimpleModuleExtension;
 import org.mustbe.consulo.kruntime.ProjectJsonModel;
 import org.mustbe.consulo.kruntime.bundle.KRuntimeBundleType;
+import org.mustbe.consulo.kruntime.util.KRuntimeUtil;
 import com.google.gson.Gson;
+import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.projectRoots.SdkType;
 import com.intellij.openapi.roots.ModuleRootLayer;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.util.CachedValueProvider;
 import com.intellij.psi.util.CachedValuesManager;
 import com.intellij.psi.util.PsiModificationTracker;
+import com.intellij.util.ArrayUtil;
+import com.intellij.util.SmartList;
 
 /**
  * @author VISTALL
@@ -84,6 +90,47 @@ public class KRuntimeModuleExtension extends BaseDotNetSimpleModuleExtension<KRu
 				return Result.create(null, PsiModificationTracker.MODIFICATION_COUNT);
 			}
 		}, false).getValue();
+	}
+
+	@NotNull
+	@Override
+	public File[] getFilesForLibraries()
+	{
+		Sdk sdk = getSdk();
+		String homePath = sdk == null ? null : sdk.getHomePath();
+
+		List<String> pathsForLibraries = getPathsForLibraries(homePath);
+
+		File[] array = EMPTY_FILE_ARRAY;
+		for(String pathsForLibrary : pathsForLibraries)
+		{
+			File dir = new File(pathsForLibrary);
+			if(dir.exists())
+			{
+				File[] files = dir.listFiles();
+				if(files != null)
+				{
+					array = ArrayUtil.mergeArrays(array, files);
+				}
+			}
+		}
+		return array;
+	}
+
+	@NotNull
+	private List<String> getPathsForLibraries(@Nullable String homePath)
+	{
+		List<String> list = new SmartList<String>();
+		String activeRuntimePath = KRuntimeUtil.getActiveRuntimePath();
+		if(activeRuntimePath != null)
+		{
+			list.add(activeRuntimePath);
+		}
+		if(homePath != null)
+		{
+			list.add(homePath);
+		}
+		return list;
 	}
 
 	@NotNull

@@ -44,7 +44,7 @@ public class KMutableModuleExtension extends KModuleExtension implements Mutable
 	@Override
 	public void setEnabled(boolean b)
 	{
-
+		myIsEnabled = b;
 	}
 
 	@Override

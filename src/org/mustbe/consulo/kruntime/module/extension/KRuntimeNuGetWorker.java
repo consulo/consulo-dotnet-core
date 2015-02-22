@@ -65,6 +65,11 @@ public class KRuntimeNuGetWorker extends NuGetBasedRepositoryWorker
 
 			map.put(idValue + "/" + versionValue, new PackageInfo(idValue, versionValue, frameworks));
 		}
+
+		for(String[] b : new String[][] {{"Microsoft.AspNet.Http", "1.0.0-beta2"}})
+		{
+			map.put(b[0] + "/" + b[1], new PackageInfo(b[0], b[1], frameworks));
+		}
 		return map;
 	}
 }

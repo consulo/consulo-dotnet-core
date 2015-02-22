@@ -3,8 +3,15 @@
 	<name>K Runtime</name>
 	<version>SNAPSHOT</version>
 	<vendor>Must-Be.org</vendor>
+	<depends>org.mustbe.consulo.dotnet.core</depends>
 
 	<extensions defaultExtensionNs="com.intellij">
 		<sdkType implementation="org.mustbe.consulo.kruntime.bundle.KRuntimeBundleType" />
+
+		<moduleExtensionProvider key="k-runtime"
+								 name="K Runtime"
+								 icon="/icons/dotnetFoundation.png"
+								 immutableClass="org.mustbe.consulo.kruntime.module.extension.KModuleExtension"
+								 mutableClass="org.mustbe.consulo.kruntime.module.extension.KMutableModuleExtension" />
 	</extensions>
 </idea-plugin>

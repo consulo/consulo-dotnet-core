@@ -2,9 +2,9 @@
   <artifact name="dist">
     <output-path>$PROJECT_DIR$/out/artifacts/dist</output-path>
     <root id="root">
-      <element id="directory" name="consulo-k-runtime">
+      <element id="directory" name="k-runtime">
         <element id="directory" name="lib">
-          <element id="zip-archive" name="consulo-k-runtime.jar">
+          <element id="zip-archive" name="k-runtime.jar">
             <element id="module-production-resource-output" name="consulo-k-runtime" />
             <element id="module-output" name="consulo-k-runtime" />
           </element>

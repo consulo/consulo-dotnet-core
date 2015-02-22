@@ -1,6 +1,10 @@
-<idea-plugin version="2">
+<idea-plugin>
 	<id>org.mustbe.consulo.kruntime</id>
 	<name>K Runtime</name>
 	<version>SNAPSHOT</version>
 	<vendor>Must-Be.org</vendor>
+
+	<extensions defaultExtensionNs="com.intellij">
+		<sdkType implementation="org.mustbe.consulo.kruntime.bundle.KRuntimeBundleType" />
+	</extensions>
 </idea-plugin>

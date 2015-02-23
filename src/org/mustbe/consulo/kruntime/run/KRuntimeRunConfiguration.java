@@ -16,28 +16,33 @@
 
 package org.mustbe.consulo.kruntime.run;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.mustbe.consulo.kruntime.bundle.KRuntimeBundleType;
 import org.mustbe.consulo.kruntime.module.extension.KRuntimeModuleExtension;
 import com.intellij.compiler.options.CompileStepBeforeRun;
 import com.intellij.execution.ExecutionException;
-import com.intellij.execution.ExecutionResult;
 import com.intellij.execution.Executor;
+import com.intellij.execution.configurations.CommandLineState;
 import com.intellij.execution.configurations.ConfigurationFactory;
+import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.ModuleBasedConfiguration;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.execution.configurations.RunConfigurationModule;
 import com.intellij.execution.configurations.RunProfileState;
+import com.intellij.execution.process.OSProcessHandler;
+import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.options.SettingsEditor;
+import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.WriteExternalException;
 import lombok.val;
@@ -83,15 +88,47 @@ public class KRuntimeRunConfiguration extends ModuleBasedConfiguration<RunConfig
 
 	@Nullable
 	@Override
-	public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment env) throws ExecutionException
+	public RunProfileState getState(@NotNull Executor executor, @NotNull final ExecutionEnvironment env) throws ExecutionException
 	{
-		return new RunProfileState()
+		return new CommandLineState(env)
 		{
-			@Nullable
+			@NotNull
 			@Override
-			public ExecutionResult execute(Executor executor, @NotNull ProgramRunner runner) throws ExecutionException
+			protected ProcessHandler startProcess() throws ExecutionException
 			{
-				return null;
+				KRuntimeRunConfiguration runProfile = (KRuntimeRunConfiguration) env.getRunProfile();
+				Module module = runProfile.getConfigurationModule().getModule();
+				if(module == null)
+				{
+					throw new ExecutionException("Invalid Module");
+				}
+
+				KRuntimeModuleExtension extension = ModuleUtilCore.getExtension(module, KRuntimeModuleExtension.class);
+				if(extension == null)
+				{
+					throw new ExecutionException("No K Runtime extension");
+				}
+
+				Sdk sdk = extension.getSdk();
+				if(sdk == null)
+				{
+					throw new ExecutionException("SDK is null");
+				}
+				String command = runProfile.getCommand();
+				if(command == null)
+				{
+					throw new ExecutionException("Command is not set");
+				}
+				File kFile = KRuntimeBundleType.getKFile(sdk.getHomePath());
+				if(kFile == null)
+				{
+					throw new ExecutionException("OS is not supported");
+				}
+				GeneralCommandLine generalCommandLine = new GeneralCommandLine();
+				generalCommandLine.setExePath(kFile.getPath());
+				generalCommandLine.addParameter(command);
+				generalCommandLine.setWorkDirectory(module.getModuleDirPath());
+				return new OSProcessHandler(generalCommandLine);
 			}
 		};
 	}

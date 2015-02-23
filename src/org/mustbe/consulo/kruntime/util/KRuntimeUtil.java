@@ -50,11 +50,6 @@ public class KRuntimeUtil
 			{
 				return dir.getPath();
 			}
-			dir = new File("/usr/lib/mono/4.0");
-			if(dir.exists())
-			{
-				return dir.getPath();
-			}
 		}
 		return null;
 	}

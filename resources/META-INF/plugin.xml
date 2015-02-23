@@ -25,5 +25,7 @@
 								 mutableClass="org.mustbe.consulo.kruntime.csharp.module.extension.KRuntimeCSharpMutableModuleExtension"/>
 
 		<editorNotificationProvider implementation="org.mustbe.consulo.kruntime.editor.ProjectJsonEditorNotificationProvider" />
+
+		<configurationType implementation="org.mustbe.consulo.kruntime.run.KRuntimeRunConfigurationType" />
 	</extensions>
 </idea-plugin>

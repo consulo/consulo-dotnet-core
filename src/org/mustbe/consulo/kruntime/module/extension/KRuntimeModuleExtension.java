@@ -19,6 +19,7 @@ package org.mustbe.consulo.kruntime.module.extension;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.List;
 
 import org.consulo.lombok.annotations.LazyInstance;
@@ -37,7 +38,6 @@ import com.intellij.psi.util.CachedValueProvider;
 import com.intellij.psi.util.CachedValuesManager;
 import com.intellij.psi.util.PsiModificationTracker;
 import com.intellij.util.ArrayUtil;
-import com.intellij.util.SmartList;
 
 /**
  * @author VISTALL
@@ -96,10 +96,7 @@ public class KRuntimeModuleExtension extends BaseDotNetSimpleModuleExtension<KRu
 	@Override
 	public File[] getFilesForLibraries()
 	{
-		Sdk sdk = getSdk();
-		String homePath = sdk == null ? null : sdk.getHomePath();
-
-		List<String> pathsForLibraries = getPathsForLibraries(homePath);
+		List<String> pathsForLibraries = getPathsForLibraries(getSdk());
 
 		File[] array = EMPTY_FILE_ARRAY;
 		for(String pathsForLibrary : pathsForLibraries)
@@ -118,19 +115,30 @@ public class KRuntimeModuleExtension extends BaseDotNetSimpleModuleExtension<KRu
 	}
 
 	@NotNull
-	private List<String> getPathsForLibraries(@Nullable String homePath)
+	private List<String> getPathsForLibraries(@Nullable Sdk sdk)
 	{
-		List<String> list = new SmartList<String>();
-		String activeRuntimePath = KRuntimeUtil.getActiveRuntimePath();
-		if(activeRuntimePath != null)
+		String homePath = sdk == null ? null : sdk.getHomePath();
+
+		KRuntimeBundleType.RuntimeType runtimeType = KRuntimeBundleType.getRuntimeType(sdk);
+		switch(runtimeType)
 		{
-			list.add(activeRuntimePath);
+			case CLR:
+			case Mono:
+				// on clr and mono we need search active
+				String activeRuntimePath = KRuntimeUtil.getActiveRuntimePath();
+				if(activeRuntimePath != null)
+				{
+					return Collections.singletonList(activeRuntimePath);
+				}
+				break;
+			case CoreCLR:
+				if(homePath != null)
+				{
+					return Collections.singletonList(homePath + "/bin");
+				}
+				break;
 		}
-		if(homePath != null)
-		{
-			list.add(homePath);
-		}
-		return list;
+		return Collections.emptyList();
 	}
 
 	@NotNull

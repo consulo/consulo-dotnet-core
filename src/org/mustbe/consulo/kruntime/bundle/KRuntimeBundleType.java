@@ -27,8 +27,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mustbe.consulo.kruntime.KRuntimeIcons;
 import com.intellij.execution.util.ExecUtil;
+import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.projectRoots.SdkType;
 import com.intellij.openapi.util.SystemInfo;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.SmartList;
 
 /**
@@ -37,6 +39,26 @@ import com.intellij.util.SmartList;
  */
 public class KRuntimeBundleType extends SdkType
 {
+	public static enum RuntimeType
+	{
+		Unknown,
+		CLR("klr.net45.managed.dll"),
+		CoreCLR("klr.core45.managed.dll"),
+		Mono("klr.mono.managed.dll");
+
+		private final String[] myFilesToValidate;
+
+		RuntimeType(String... filesToValidate)
+		{
+			myFilesToValidate = filesToValidate;
+		}
+
+		public String[] getFilesToValidate()
+		{
+			return myFilesToValidate;
+		}
+	}
+
 	@Nullable
 	public static File getKFile(String path)
 	{
@@ -54,6 +76,40 @@ public class KRuntimeBundleType extends SdkType
 			return null;
 		}
 		return new File(path, relativePath);
+	}
+
+	@NotNull
+	public static RuntimeType getRuntimeType(@Nullable Sdk sdk)
+	{
+		if(sdk == null)
+		{
+			return RuntimeType.Unknown;
+		}
+
+		VirtualFile homeDirectory = sdk.getHomeDirectory();
+		if(homeDirectory == null)
+		{
+			return RuntimeType.Unknown;
+		}
+
+		VirtualFile binDirectory = homeDirectory.findChild("bin");
+		if(binDirectory == null)
+		{
+			return RuntimeType.Unknown;
+		}
+
+		for(RuntimeType runtimeType : RuntimeType.values())
+		{
+			for(String file : runtimeType.getFilesToValidate())
+			{
+				VirtualFile child = binDirectory.findChild(file);
+				if(child != null)
+				{
+					return runtimeType;
+				}
+			}
+		}
+		return RuntimeType.Unknown;
 	}
 
 	public KRuntimeBundleType()

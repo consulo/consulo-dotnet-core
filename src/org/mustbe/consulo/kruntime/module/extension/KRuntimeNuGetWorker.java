@@ -1,9 +1,7 @@
 package org.mustbe.consulo.kruntime.module.extension;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -11,6 +9,7 @@ import org.mustbe.consulo.kruntime.ProjectJsonModel;
 import org.mustbe.consulo.nuget.module.extension.NuGetBasedRepositoryWorker;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.ArrayUtil;
+import com.intellij.util.Consumer;
 
 /**
  * @author VISTALL
@@ -39,37 +38,36 @@ public class KRuntimeNuGetWorker extends NuGetBasedRepositoryWorker
 		return moduleDir.getPath() + "/" + PACKAGES_DIR;
 	}
 
-	@NotNull
 	@Override
-	protected Map<String, PackageInfo> getPackagesInfo()
+	protected void loadDefinedPackages(@NotNull Consumer<PackageInfo> packageInfoConsumer)
 	{
 		ProjectJsonModel projectJsonModel = myExtension.getProjectJsonModel();
 		if(projectJsonModel == null)
 		{
-			return Collections.emptyMap();
+			return;
 		}
 
 		Set<String> frameworksAsSet = projectJsonModel.frameworks.keySet();
 		if(frameworksAsSet.isEmpty())
 		{
-			return Collections.emptyMap();
+			return;
 		}
 
 		String[] frameworks = ArrayUtil.toStringArray(frameworksAsSet);
 
-		Map<String, PackageInfo> map = new TreeMap<String, PackageInfo>();
 		for(Map.Entry<String, String> entry : projectJsonModel.dependencies.entrySet())
 		{
 			String idValue = entry.getKey();
 			String versionValue = entry.getValue();
 
-			map.put(idValue + "/" + versionValue, new PackageInfo(idValue, versionValue, frameworks));
+			packageInfoConsumer.consume(new PackageInfo(idValue, versionValue, frameworks));
 		}
+	}
 
-		for(String[] b : new String[][] {{"Microsoft.AspNet.Http", "1.0.0-beta2"}})
-		{
-			map.put(b[0] + "/" + b[1], new PackageInfo(b[0], b[1], frameworks));
-		}
-		return map;
+	@NotNull
+	@Override
+	public String getNameAndVersionSeparator()
+	{
+		return "/";
 	}
 }

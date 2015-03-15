@@ -19,12 +19,15 @@ package org.mustbe.consulo.kruntime.module.extension;
 import javax.swing.JComponent;
 
 import org.consulo.module.extension.MutableModuleInheritableNamedPointer;
+import org.consulo.module.extension.ui.ModuleExtensionSdkBoxBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mustbe.consulo.dotnet.module.extension.DotNetModuleExtensionWithSdkPanel;
+import org.mustbe.consulo.RequiredDispatchThread;
 import org.mustbe.consulo.dotnet.module.extension.DotNetSimpleMutableModuleExtension;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootLayer;
+import com.intellij.util.NullableFunction;
+import lombok.val;
 
 /**
  * @author VISTALL
@@ -46,9 +49,22 @@ public class KRuntimeMutableModuleExtension extends KRuntimeModuleExtension impl
 
 	@Nullable
 	@Override
+	@RequiredDispatchThread
 	public JComponent createConfigurablePanel(@NotNull Runnable runnable)
 	{
-		return wrapToNorth(DotNetModuleExtensionWithSdkPanel.create(this, runnable));
+		val sdkBoxBuilder = ModuleExtensionSdkBoxBuilder.<KRuntimeMutableModuleExtension>create(this, runnable);
+		sdkBoxBuilder.sdkTypeClass(getSdkTypeClass());
+		sdkBoxBuilder.sdkPointerFunc(new NullableFunction<KRuntimeMutableModuleExtension, MutableModuleInheritableNamedPointer<Sdk>>()
+		{
+			@Nullable
+			@Override
+			public MutableModuleInheritableNamedPointer<Sdk> fun(KRuntimeMutableModuleExtension mutableModuleExtension)
+			{
+				return mutableModuleExtension.getInheritableSdk();
+			}
+		});
+
+		return wrapToNorth(sdkBoxBuilder.build());
 	}
 
 	@Override

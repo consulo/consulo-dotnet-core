@@ -1,5 +1,6 @@
 package org.mustbe.consulo.kruntime.module.extension;
 
+import java.io.File;
 import java.util.Map;
 import java.util.Set;
 
@@ -7,9 +8,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mustbe.consulo.kruntime.ProjectJsonModel;
 import org.mustbe.consulo.nuget.module.extension.NuGetBasedRepositoryWorker;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.Consumer;
+import com.intellij.util.SystemProperties;
 
 /**
  * @author VISTALL
@@ -25,17 +27,16 @@ public class KRuntimeNuGetWorker extends NuGetBasedRepositoryWorker
 		myExtension = extension;
 	}
 
-	//TODO [VISTALL] map to user.home/.kpm
 	@Nullable
 	@Override
 	protected String getPackagesDirPath()
 	{
-		VirtualFile moduleDir = myModule.getModuleDir();
-		if(moduleDir == null)
-		{
-			return null;
-		}
-		return moduleDir.getPath() + "/" + PACKAGES_DIR;
+		return SystemProperties.getUserHome() + File.separator + ".kpm" + File.separator + PACKAGES_DIR;
+	}
+
+	@Override
+	protected void removeInvalidDependenciesFromFileSystem(Map<String, PackageInfo> packages, ProgressIndicator indicator)
+	{
 	}
 
 	@Override

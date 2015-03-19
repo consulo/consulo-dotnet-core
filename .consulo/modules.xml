@@ -35,16 +35,22 @@
             </library>
           </orderEntry>
           <orderEntry type="module-library">
-            <library name="consulo:JavaScript Support">
+            <library name="consulo:NuGet">
               <binaries>
-                <root url="jar://$MODULE_DIR$/dep/javascript/lib/javascript.jar!/" />
+                <root url="jar://$MODULE_DIR$/dep/nuget/lib/nuget.jar!/" />
               </binaries>
             </library>
           </orderEntry>
           <orderEntry type="module-library">
-            <library name="consulo:NuGet">
+            <library name="consulo:JavaScript Support">
               <binaries>
-                <root url="jar://$MODULE_DIR$/dep/nuget/lib/nuget.jar!/" />
+                <root url="jar://$MODULE_DIR$/dep/javascript/lib/debugger-impl.jar!/" />
+                <root url="jar://$MODULE_DIR$/dep/javascript/lib/gwt-impl.jar!/" />
+                <root url="jar://$MODULE_DIR$/dep/javascript/lib/javascript.jar!/" />
+                <root url="jar://$MODULE_DIR$/dep/javascript/lib/json-impl.jar!/" />
+                <root url="jar://$MODULE_DIR$/dep/javascript/lib/json_simple-1.1.jar!/" />
+                <root url="jar://$MODULE_DIR$/dep/javascript/lib/lib.org.chromium.sdk.jar!/" />
+                <root url="jar://$MODULE_DIR$/dep/javascript/lib/lib.org.chromium.sdk.wipbackend.protocol_1_0.jar!/" />
               </binaries>
             </library>
           </orderEntry>

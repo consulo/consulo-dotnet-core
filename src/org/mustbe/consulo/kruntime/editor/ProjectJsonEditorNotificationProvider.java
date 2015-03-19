@@ -1,8 +1,8 @@
 package org.mustbe.consulo.kruntime.editor;
 
 import org.jetbrains.annotations.Nullable;
+import org.mustbe.consulo.json.JsonFileType;
 import org.mustbe.consulo.kruntime.module.extension.KRuntimeModuleExtension;
-import com.intellij.lang.javascript.JsonFileType;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtilCore;

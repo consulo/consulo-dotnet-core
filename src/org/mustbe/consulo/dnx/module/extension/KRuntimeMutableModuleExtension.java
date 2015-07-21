@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.mustbe.consulo.kruntime.module.extension;
+package org.mustbe.consulo.dnx.module.extension;
 
 import javax.swing.JComponent;
 

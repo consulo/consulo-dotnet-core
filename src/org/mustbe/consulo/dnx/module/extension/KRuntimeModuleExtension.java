@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.mustbe.consulo.kruntime.module.extension;
+package org.mustbe.consulo.dnx.module.extension;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,9 +26,9 @@ import org.consulo.lombok.annotations.LazyInstance;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mustbe.consulo.dotnet.module.extension.BaseDotNetSimpleModuleExtension;
-import org.mustbe.consulo.kruntime.ProjectJsonModel;
-import org.mustbe.consulo.kruntime.bundle.KRuntimeBundleType;
-import org.mustbe.consulo.kruntime.util.KRuntimeUtil;
+import org.mustbe.consulo.dnx.ProjectJsonModel;
+import org.mustbe.consulo.dnx.bundle.KRuntimeBundleType;
+import org.mustbe.consulo.dnx.util.KRuntimeUtil;
 import com.google.gson.Gson;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.projectRoots.SdkType;

@@ -1,4 +1,4 @@
-package org.mustbe.consulo.kruntime;
+package org.mustbe.consulo.dnx;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

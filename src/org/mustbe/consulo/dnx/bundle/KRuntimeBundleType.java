@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package org.mustbe.consulo.kruntime.bundle;
+package org.mustbe.consulo.dnx.bundle;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import javax.swing.Icon;
 
+import org.consulo.lombok.annotations.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mustbe.consulo.kruntime.KRuntimeIcons;
+import org.mustbe.consulo.dnx.KRuntimeIcons;
+import com.intellij.execution.ExecutionException;
+import com.intellij.execution.process.ProcessOutput;
 import com.intellij.execution.util.ExecUtil;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.projectRoots.SdkType;
@@ -37,14 +41,15 @@ import com.intellij.util.SmartList;
  * @author VISTALL
  * @since 22.02.2015
  */
+@Logger
 public class KRuntimeBundleType extends SdkType
 {
 	public static enum RuntimeType
 	{
 		Unknown,
-		CLR("klr.net45.managed.dll"),
-		CoreCLR("klr.core45.managed.dll"),
-		Mono("klr.mono.managed.dll");
+		CLR("dnx.clr.managed.dll"),
+		CoreCLR("dnx.coreclr.managed.dll"),
+		Mono("dnx.mono.managed.dll");
 
 		private final String[] myFilesToValidate;
 
@@ -63,13 +68,9 @@ public class KRuntimeBundleType extends SdkType
 	public static File getKFile(String path)
 	{
 		String relativePath = null;
-		if(SystemInfo.isWindows)
+		if(SystemInfo.isLinux || SystemInfo.isWindows)
 		{
-			relativePath = "bin/k.cmd";
-		}
-		else if(SystemInfo.isLinux)
-		{
-			relativePath = "bin/k.exe";
+			relativePath = "bin/dnx.exe";
 		}
 		if(relativePath == null)
 		{
@@ -126,7 +127,7 @@ public class KRuntimeBundleType extends SdkType
 		{
 			String userHomePath = System.getProperty("user.home");
 
-			File dir = new File(userHomePath, ".kre/packages");
+			File dir = new File(userHomePath, ".dnx/runtimes");
 			if(!dir.exists())
 			{
 				return Collections.emptyList();
@@ -167,10 +168,23 @@ public class KRuntimeBundleType extends SdkType
 		{
 			return null;
 		}
-		String version = ExecUtil.execAndReadLine(kFile.getPath(), "--version");
-		if(version != null)
+		try
 		{
-			return version;
+			ProcessOutput processOutput = ExecUtil.execAndGetOutput(Arrays.asList(kFile.getPath(), "--version"), null);
+			List<String> stdoutLines = processOutput.getStdoutLines();
+			for(String stdoutLine : stdoutLines)
+			{
+				String prefix = "Version:";
+				stdoutLine = stdoutLine.trim();
+				if(stdoutLine.startsWith(prefix))
+				{
+					return stdoutLine.substring(prefix.length(), stdoutLine.length()).trim();
+				}
+			}
+		}
+		catch(ExecutionException e)
+		{
+			LOGGER.warn(e);
 		}
 		return null;
 	}
@@ -185,7 +199,7 @@ public class KRuntimeBundleType extends SdkType
 	@Override
 	public String getPresentableName()
 	{
-		return "K Runtime";
+		return "DNX";
 	}
 
 	@Nullable

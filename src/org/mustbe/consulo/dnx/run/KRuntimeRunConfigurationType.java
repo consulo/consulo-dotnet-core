@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.mustbe.consulo.kruntime.run;
+package org.mustbe.consulo.dnx.run;
 
 import org.jetbrains.annotations.NotNull;
-import org.mustbe.consulo.kruntime.KRuntimeIcons;
-import org.mustbe.consulo.kruntime.ProjectJsonModel;
-import org.mustbe.consulo.kruntime.module.extension.KRuntimeModuleExtension;
+import org.mustbe.consulo.dnx.KRuntimeIcons;
+import org.mustbe.consulo.dnx.ProjectJsonModel;
+import org.mustbe.consulo.dnx.module.extension.KRuntimeModuleExtension;
 import org.mustbe.consulo.module.extension.ModuleExtensionHelper;
 import com.intellij.execution.configuration.ConfigurationFactoryEx;
 import com.intellij.execution.configurations.ConfigurationTypeBase;
@@ -44,7 +44,7 @@ public class KRuntimeRunConfigurationType extends ConfigurationTypeBase
 
 	public KRuntimeRunConfigurationType()
 	{
-		super("#KRuntimeRunConfigurationType", "K Runtime", null, KRuntimeIcons.DotnetFoundation);
+		super("#DNXRunConfigurationType", "DNX", null, KRuntimeIcons.DotnetFoundation);
 
 		addFactory(new ConfigurationFactoryEx(this)
 		{

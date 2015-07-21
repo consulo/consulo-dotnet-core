@@ -1,6 +1,6 @@
 <idea-plugin>
-	<id>org.mustbe.consulo.kruntime</id>
-	<name>K Runtime</name>
+	<id>org.mustbe.consulo.dnx</id>
+	<name>DNX(K Runtime)</name>
 	<version>SNAPSHOT</version>
 	<vendor>Must-Be.org</vendor>
 	<depends>org.mustbe.consulo.dotnet.core</depends>
@@ -9,23 +9,23 @@
 	<depends>org.mustbe.consulo.nuget</depends>
 
 	<extensions defaultExtensionNs="com.intellij">
-		<sdkType implementation="org.mustbe.consulo.kruntime.bundle.KRuntimeBundleType"/>
+		<sdkType implementation="org.mustbe.consulo.dnx.bundle.KRuntimeBundleType"/>
 
 		<moduleExtensionProvider key="k-runtime"
-								 name="K Runtime"
+								 name="DNX"
 								 icon="/icons/dotnetFoundation.png"
-								 immutableClass="org.mustbe.consulo.kruntime.module.extension.KRuntimeModuleExtension"
-								 mutableClass="org.mustbe.consulo.kruntime.module.extension.KRuntimeMutableModuleExtension"/>
+								 immutableClass="org.mustbe.consulo.dnx.module.extension.KRuntimeModuleExtension"
+								 mutableClass="org.mustbe.consulo.dnx.module.extension.KRuntimeMutableModuleExtension"/>
 
 		<moduleExtensionProvider key="k-runtime-csharp"
 								 parentKey="k-runtime"
 								 icon="/icons/dotnetFoundation.png"
 								 name="C#"
-								 immutableClass="org.mustbe.consulo.kruntime.csharp.module.extension.KRuntimeCSharpModuleExtension"
-								 mutableClass="org.mustbe.consulo.kruntime.csharp.module.extension.KRuntimeCSharpMutableModuleExtension"/>
+								 immutableClass="org.mustbe.consulo.dnx.csharp.module.extension.KRuntimeCSharpModuleExtension"
+								 mutableClass="org.mustbe.consulo.dnx.csharp.module.extension.KRuntimeCSharpMutableModuleExtension"/>
 
-		<editorNotificationProvider implementation="org.mustbe.consulo.kruntime.editor.ProjectJsonEditorNotificationProvider" />
+		<editorNotificationProvider implementation="org.mustbe.consulo.dnx.editor.ProjectJsonEditorNotificationProvider" />
 
-		<configurationType implementation="org.mustbe.consulo.kruntime.run.KRuntimeRunConfigurationType" />
+		<configurationType implementation="org.mustbe.consulo.dnx.run.KRuntimeRunConfigurationType" />
 	</extensions>
 </idea-plugin>

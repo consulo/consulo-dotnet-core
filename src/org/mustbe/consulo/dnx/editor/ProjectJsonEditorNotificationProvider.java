@@ -1,8 +1,8 @@
-package org.mustbe.consulo.kruntime.editor;
+package org.mustbe.consulo.dnx.editor;
 
 import org.jetbrains.annotations.Nullable;
 import org.mustbe.consulo.json.JsonFileType;
-import org.mustbe.consulo.kruntime.module.extension.KRuntimeModuleExtension;
+import org.mustbe.consulo.dnx.module.extension.KRuntimeModuleExtension;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtilCore;
@@ -71,7 +71,7 @@ public class ProjectJsonEditorNotificationProvider extends EditorNotifications.P
 		}
 
 		EditorNotificationPanel panel = new EditorNotificationPanel();
-		panel.setText("K Runtime Project File");
+		panel.setText("DNX Project File");
 		panel.createActionLabel("Update Dependencies", new Runnable()
 		{
 			@Override

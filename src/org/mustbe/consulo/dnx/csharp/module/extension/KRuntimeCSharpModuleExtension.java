@@ -1,4 +1,4 @@
-package org.mustbe.consulo.kruntime.csharp.module.extension;
+package org.mustbe.consulo.dnx.csharp.module.extension;
 
 import org.jetbrains.annotations.NotNull;
 import org.mustbe.consulo.csharp.module.extension.BaseCSharpModuleExtension;

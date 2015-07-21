@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.mustbe.consulo.kruntime.run;
+package org.mustbe.consulo.dnx.run;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -25,8 +25,8 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 
 import org.jetbrains.annotations.NotNull;
-import org.mustbe.consulo.kruntime.ProjectJsonModel;
-import org.mustbe.consulo.kruntime.module.extension.KRuntimeModuleExtension;
+import org.mustbe.consulo.dnx.ProjectJsonModel;
+import org.mustbe.consulo.dnx.module.extension.KRuntimeModuleExtension;
 import com.intellij.application.options.ModuleListCellRenderer;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;

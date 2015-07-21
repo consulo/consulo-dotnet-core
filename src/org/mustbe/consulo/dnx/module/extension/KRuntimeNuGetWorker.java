@@ -1,4 +1,4 @@
-package org.mustbe.consulo.kruntime.module.extension;
+package org.mustbe.consulo.dnx.module.extension;
 
 import java.io.File;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mustbe.consulo.kruntime.ProjectJsonModel;
+import org.mustbe.consulo.dnx.ProjectJsonModel;
 import org.mustbe.consulo.nuget.module.extension.NuGetBasedRepositoryWorker;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.util.ArrayUtil;

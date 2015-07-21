@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package org.mustbe.consulo.kruntime.run;
+package org.mustbe.consulo.dnx.run;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mustbe.consulo.kruntime.bundle.KRuntimeBundleType;
-import org.mustbe.consulo.kruntime.module.extension.KRuntimeModuleExtension;
+import org.mustbe.consulo.dnx.bundle.KRuntimeBundleType;
+import org.mustbe.consulo.dnx.module.extension.KRuntimeModuleExtension;
 import com.intellij.compiler.options.CompileStepBeforeRun;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
@@ -45,7 +46,6 @@ import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.WriteExternalException;
-import lombok.val;
 
 /**
  * @author VISTALL
@@ -68,8 +68,8 @@ public class KRuntimeRunConfiguration extends ModuleBasedConfiguration<RunConfig
 	@Override
 	public Collection<Module> getValidModules()
 	{
-		val list = new ArrayList<Module>();
-		for(val module : ModuleManager.getInstance(getProject()).getModules())
+		List<Module> list = new ArrayList<Module>();
+		for(Module module : ModuleManager.getInstance(getProject()).getModules())
 		{
 			if(ModuleUtilCore.getExtension(module, KRuntimeModuleExtension.class) != null)
 			{
@@ -106,7 +106,7 @@ public class KRuntimeRunConfiguration extends ModuleBasedConfiguration<RunConfig
 				KRuntimeModuleExtension extension = ModuleUtilCore.getExtension(module, KRuntimeModuleExtension.class);
 				if(extension == null)
 				{
-					throw new ExecutionException("No K Runtime extension");
+					throw new ExecutionException("No DNX extension");
 				}
 
 				Sdk sdk = extension.getSdk();

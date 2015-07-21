@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.mustbe.consulo.kruntime.util;
+package org.mustbe.consulo.dnx.util;
 
 import java.io.File;
 

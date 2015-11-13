@@ -17,26 +17,25 @@
 package org.mustbe.consulo.dnx.module.extension;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.List;
 
 import org.consulo.lombok.annotations.LazyInstance;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mustbe.consulo.dotnet.module.extension.BaseDotNetSimpleModuleExtension;
-import org.mustbe.consulo.dnx.ProjectJsonModel;
+import org.mustbe.consulo.RequiredReadAction;
 import org.mustbe.consulo.dnx.bundle.KRuntimeBundleType;
+import org.mustbe.consulo.dnx.jom.ProjectElement;
 import org.mustbe.consulo.dnx.util.KRuntimeUtil;
-import com.google.gson.Gson;
+import org.mustbe.consulo.dotnet.module.extension.BaseDotNetSimpleModuleExtension;
+import org.mustbe.consulo.json.jom.JomFileElement;
+import org.mustbe.consulo.json.jom.JomManager;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.projectRoots.SdkType;
 import com.intellij.openapi.roots.ModuleRootLayer;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.util.CachedValueProvider;
-import com.intellij.psi.util.CachedValuesManager;
-import com.intellij.psi.util.PsiModificationTracker;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
 import com.intellij.util.ArrayUtil;
 
 /**
@@ -60,36 +59,30 @@ public class KRuntimeModuleExtension extends BaseDotNetSimpleModuleExtension<KRu
 	}
 
 	@Nullable
-	public ProjectJsonModel getProjectJsonModel()
+	@RequiredReadAction
+	public ProjectElement getProjectElement()
 	{
-		return CachedValuesManager.getManager(getProject()).createCachedValue(new CachedValueProvider<ProjectJsonModel>()
+		VirtualFile moduleDir = getModule().getModuleDir();
+		if(moduleDir == null)
 		{
-			@Nullable
-			@Override
-			public Result<ProjectJsonModel> compute()
-			{
-				VirtualFile moduleDir = getModule().getModuleDir();
-				if(moduleDir == null)
-				{
-					return Result.create(null, PsiModificationTracker.MODIFICATION_COUNT);
-				}
-				VirtualFile child = moduleDir.findChild(PROJECT_JSON);
-				if(child == null)
-				{
-					return Result.create(null, PsiModificationTracker.MODIFICATION_COUNT);
-				}
-				try
-				{
-					ProjectJsonModel projectJsonModel = new Gson().fromJson(new InputStreamReader(child.getInputStream()), ProjectJsonModel.class);
-					return Result.create(projectJsonModel, PsiModificationTracker.MODIFICATION_COUNT);
-				}
-				catch(IOException e)
-				{
-					e.printStackTrace();
-				}
-				return Result.create(null, PsiModificationTracker.MODIFICATION_COUNT);
-			}
-		}, false).getValue();
+			return null;
+		}
+		VirtualFile child = moduleDir.findChild(PROJECT_JSON);
+		if(child == null)
+		{
+			return null;
+		}
+		PsiFile file = PsiManager.getInstance(getProject()).findFile(child);
+		if(file == null)
+		{
+			return null;
+		}
+		JomFileElement<ProjectElement> fileElement = JomManager.getInstance(getProject()).getFileElement(file);
+		if(fileElement == null)
+		{
+			return null;
+		}
+		return fileElement.getRootElement();
 	}
 
 	@NotNull

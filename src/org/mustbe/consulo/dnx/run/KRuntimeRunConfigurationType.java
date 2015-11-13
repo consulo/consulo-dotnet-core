@@ -17,8 +17,9 @@
 package org.mustbe.consulo.dnx.run;
 
 import org.jetbrains.annotations.NotNull;
+import org.mustbe.consulo.RequiredDispatchThread;
 import org.mustbe.consulo.dnx.KRuntimeIcons;
-import org.mustbe.consulo.dnx.ProjectJsonModel;
+import org.mustbe.consulo.dnx.jom.ProjectElement;
 import org.mustbe.consulo.dnx.module.extension.KRuntimeModuleExtension;
 import org.mustbe.consulo.module.extension.ModuleExtensionHelper;
 import com.intellij.execution.configuration.ConfigurationFactoryEx;
@@ -55,6 +56,7 @@ public class KRuntimeRunConfigurationType extends ConfigurationTypeBase
 			}
 
 			@Override
+			@RequiredDispatchThread
 			public void onNewConfigurationCreated(@NotNull RunConfiguration configuration)
 			{
 				KRuntimeRunConfiguration conf = (KRuntimeRunConfiguration) configuration;
@@ -64,12 +66,12 @@ public class KRuntimeRunConfigurationType extends ConfigurationTypeBase
 					KRuntimeModuleExtension extension = ModuleUtilCore.getExtension(module, KRuntimeModuleExtension.class);
 					if(extension != null)
 					{
-						ProjectJsonModel projectJsonModel = extension.getProjectJsonModel();
-						if(projectJsonModel == null)
+						ProjectElement projectElement = extension.getProjectElement();
+						if(projectElement == null)
 						{
 							continue;
 						}
-						String firstItem = ContainerUtil.getFirstItem(projectJsonModel.commands.keySet());
+						String firstItem = ContainerUtil.getFirstItem(projectElement.getCommands().keySet());
 						if(firstItem == null)
 						{
 							continue;

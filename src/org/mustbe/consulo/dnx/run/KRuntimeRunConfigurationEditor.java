@@ -18,6 +18,7 @@ package org.mustbe.consulo.dnx.run;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Collections;
 import java.util.Set;
 
 import javax.swing.JComboBox;
@@ -25,7 +26,8 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 
 import org.jetbrains.annotations.NotNull;
-import org.mustbe.consulo.dnx.ProjectJsonModel;
+import org.mustbe.consulo.RequiredDispatchThread;
+import org.mustbe.consulo.dnx.jom.ProjectElement;
 import org.mustbe.consulo.dnx.module.extension.KRuntimeModuleExtension;
 import com.intellij.application.options.ModuleListCellRenderer;
 import com.intellij.openapi.module.Module;
@@ -37,9 +39,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.ColoredListCellRendererWrapper;
 import com.intellij.ui.SimpleTextAttributes;
-import com.intellij.util.ObjectUtils;
 import com.intellij.util.ui.FormBuilder;
-import lombok.val;
 
 /**
  * @author VISTALL
@@ -52,7 +52,7 @@ public class KRuntimeRunConfigurationEditor extends SettingsEditor<KRuntimeRunCo
 	private JComboBox myModuleComboBox;
 	private JComboBox myCommandComboBox;
 
-	private ProjectJsonModel myCurrentJsonModel = new ProjectJsonModel();
+	private Set<String> myCurrentCommands = Collections.emptySet();
 
 	public KRuntimeRunConfigurationEditor(Project project)
 	{
@@ -75,11 +75,12 @@ public class KRuntimeRunConfigurationEditor extends SettingsEditor<KRuntimeRunCo
 
 	@NotNull
 	@Override
+	@RequiredDispatchThread
 	protected JComponent createEditor()
 	{
 		myModuleComboBox = new ComboBox();
 		myModuleComboBox.setRenderer(new ModuleListCellRenderer());
-		for(val module : ModuleManager.getInstance(myProject).getModules())
+		for(Module module : ModuleManager.getInstance(myProject).getModules())
 		{
 			if(ModuleUtilCore.getExtension(module, KRuntimeModuleExtension.class) != null)
 			{
@@ -89,6 +90,7 @@ public class KRuntimeRunConfigurationEditor extends SettingsEditor<KRuntimeRunCo
 		myModuleComboBox.addItemListener(new ItemListener()
 		{
 			@Override
+			@RequiredDispatchThread
 			public void itemStateChanged(ItemEvent e)
 			{
 				if(e.getStateChange() == ItemEvent.SELECTED)
@@ -109,7 +111,7 @@ public class KRuntimeRunConfigurationEditor extends SettingsEditor<KRuntimeRunCo
 					append("null", SimpleTextAttributes.ERROR_ATTRIBUTES);
 					return;
 				}
-				if(!myCurrentJsonModel.commands.containsKey(value))
+				if(!myCurrentCommands.contains(value))
 				{
 					append(value, SimpleTextAttributes.ERROR_ATTRIBUTES);
 				}
@@ -128,34 +130,26 @@ public class KRuntimeRunConfigurationEditor extends SettingsEditor<KRuntimeRunCo
 		return formBuilder.getPanel();
 	}
 
+	@RequiredDispatchThread
 	private void refreshCommandBox(boolean select)
 	{
 		String commandSelectedItem = (String) myCommandComboBox.getSelectedItem();
 
-		ProjectJsonModel temp;
+		Set<String> commands = Collections.emptySet();
 
 		Module selectedItem = (Module) myModuleComboBox.getSelectedItem();
-		if(selectedItem == null)
-		{
-			temp = new ProjectJsonModel();
-		}
-		else
+		if(selectedItem != null)
 		{
 			KRuntimeModuleExtension extension = ModuleUtilCore.getExtension(selectedItem, KRuntimeModuleExtension.class);
 			if(extension != null)
 			{
-				ProjectJsonModel projectJsonModel = extension.getProjectJsonModel();
-				temp = ObjectUtils.notNull(projectJsonModel, new ProjectJsonModel());
-			}
-			else
-			{
-				temp = new ProjectJsonModel();
+				ProjectElement projectElement = extension.getProjectElement();
+				commands = projectElement == null ? Collections.<String>emptySet() : projectElement.getCommands().keySet();
 			}
 		}
 
-		myCurrentJsonModel = temp;
+		myCurrentCommands = commands;
 		myCommandComboBox.removeAllItems();
-		Set<String> commands = temp.commands.keySet();
 		for(String command : commands)
 		{
 			myCommandComboBox.addItem(command);
@@ -173,8 +167,7 @@ public class KRuntimeRunConfigurationEditor extends SettingsEditor<KRuntimeRunCo
 		{
 			myCommandComboBox.setSelectedItem(null);
 		}
-		Set<String> commands = myCurrentJsonModel.commands.keySet();
-		if(commands.contains(command))
+		if(myCurrentCommands.contains(command))
 		{
 			myCommandComboBox.setSelectedItem(command);
 		}

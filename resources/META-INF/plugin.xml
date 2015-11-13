@@ -8,6 +8,10 @@
 	<depends>org.mustbe.consulo.javascript</depends>
 	<depends>org.mustbe.consulo.nuget</depends>
 
+	<extensions defaultExtensionNs="org.mustbe.consulo.javascript">
+		<jomFileDescriptor implementation="org.mustbe.consulo.dnx.jom.ProjectFileDescriptor" />
+	</extensions>
+
 	<extensions defaultExtensionNs="com.intellij">
 		<sdkType implementation="org.mustbe.consulo.dnx.bundle.KRuntimeBundleType"/>
 

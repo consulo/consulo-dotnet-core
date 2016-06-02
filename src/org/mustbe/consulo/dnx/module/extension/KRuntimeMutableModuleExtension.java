@@ -17,6 +17,7 @@
 package org.mustbe.consulo.dnx.module.extension;
 
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 import org.consulo.module.extension.MutableModuleInheritableNamedPointer;
 import org.consulo.module.extension.ui.ModuleExtensionSdkBoxBuilder;
@@ -26,8 +27,8 @@ import org.mustbe.consulo.RequiredDispatchThread;
 import org.mustbe.consulo.dotnet.module.extension.DotNetSimpleMutableModuleExtension;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootLayer;
+import com.intellij.openapi.ui.VerticalFlowLayout;
 import com.intellij.util.NullableFunction;
-import lombok.val;
 
 /**
  * @author VISTALL
@@ -52,7 +53,7 @@ public class KRuntimeMutableModuleExtension extends KRuntimeModuleExtension impl
 	@RequiredDispatchThread
 	public JComponent createConfigurablePanel(@NotNull Runnable runnable)
 	{
-		val sdkBoxBuilder = ModuleExtensionSdkBoxBuilder.<KRuntimeMutableModuleExtension>create(this, runnable);
+		ModuleExtensionSdkBoxBuilder<KRuntimeMutableModuleExtension> sdkBoxBuilder = ModuleExtensionSdkBoxBuilder.create(this, runnable);
 		sdkBoxBuilder.sdkTypeClass(getSdkTypeClass());
 		sdkBoxBuilder.sdkPointerFunc(new NullableFunction<KRuntimeMutableModuleExtension, MutableModuleInheritableNamedPointer<Sdk>>()
 		{
@@ -64,7 +65,9 @@ public class KRuntimeMutableModuleExtension extends KRuntimeModuleExtension impl
 			}
 		});
 
-		return wrapToNorth(sdkBoxBuilder.build());
+		JPanel panel = new JPanel(new VerticalFlowLayout(true, false));
+		panel.add(sdkBoxBuilder.build());
+		return panel;
 	}
 
 	@Override

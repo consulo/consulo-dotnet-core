@@ -26,11 +26,11 @@ import com.intellij.execution.configuration.ConfigurationFactoryEx;
 import com.intellij.execution.configurations.ConfigurationTypeBase;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.execution.configurations.RunConfigurationModule;
+import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.containers.ContainerUtil;
-import lombok.val;
 
 /**
  * @author VISTALL
@@ -61,7 +61,7 @@ public class KRuntimeRunConfigurationType extends ConfigurationTypeBase
 			{
 				KRuntimeRunConfiguration conf = (KRuntimeRunConfiguration) configuration;
 
-				for(val module : ModuleManager.getInstance(configuration.getProject()).getModules())
+				for(Module module : ModuleManager.getInstance(configuration.getProject()).getModules())
 				{
 					KRuntimeModuleExtension extension = ModuleUtilCore.getExtension(module, KRuntimeModuleExtension.class);
 					if(extension != null)

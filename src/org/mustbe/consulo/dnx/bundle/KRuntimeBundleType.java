@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.swing.Icon;
 
-import org.consulo.lombok.annotations.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mustbe.consulo.dnx.KRuntimeIcons;
@@ -36,6 +35,7 @@ import com.intellij.openapi.projectRoots.SdkType;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.SmartList;
+import consulo.lombok.annotations.Logger;
 
 /**
  * @author VISTALL

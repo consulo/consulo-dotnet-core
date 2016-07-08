@@ -20,7 +20,6 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
-import org.consulo.lombok.annotations.LazyInstance;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mustbe.consulo.RequiredReadAction;
@@ -37,6 +36,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.util.ArrayUtil;
+import consulo.lombok.annotations.Lazy;
 
 /**
  * @author VISTALL
@@ -52,7 +52,7 @@ public class KRuntimeModuleExtension extends BaseDotNetSimpleModuleExtension<KRu
 	}
 
 	@NotNull
-	@LazyInstance
+	@Lazy
 	public KRuntimeNuGetWorker getWorker()
 	{
 		return new KRuntimeNuGetWorker(KRuntimeModuleExtension.this);

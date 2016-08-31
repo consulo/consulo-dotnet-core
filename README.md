@@ -1,1 +1,1 @@
-![Build Status](http://must-be.org/vulcan/statusImage?name=consulo-k-runtime)
+![Build Status](http://must-be.org/vulcan/statusImage?name=consulo-dnx)

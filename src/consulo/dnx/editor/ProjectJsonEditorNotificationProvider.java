@@ -1,11 +1,23 @@
-package org.mustbe.consulo.dnx.editor;
+/*
+ * Copyright 2013-2017 must-be.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package consulo.dnx.editor;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mustbe.consulo.RequiredReadAction;
-import org.mustbe.consulo.dnx.module.extension.KRuntimeModuleExtension;
-import org.mustbe.consulo.editor.notifications.EditorNotificationProvider;
-import org.mustbe.consulo.json.JsonFileType;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtilCore;
@@ -13,6 +25,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.EditorNotificationPanel;
+import consulo.annotations.RequiredReadAction;
+import consulo.dnx.module.extension.KRuntimeModuleExtension;
+import consulo.editor.notifications.EditorNotificationProvider;
+import consulo.json.JsonFileType;
 
 /**
  * @author VISTALL

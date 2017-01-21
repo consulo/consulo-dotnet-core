@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 must-be.org
+ * Copyright 2013-2017 must-be.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,28 @@
  * limitations under the License.
  */
 
-package org.mustbe.consulo.dnx.jom;
-
-import java.util.Map;
+package consulo.dnx.csharp.module.extension;
 
 import org.jetbrains.annotations.NotNull;
-import org.mustbe.consulo.json.jom.JomElement;
-import org.mustbe.consulo.json.jom.JomPropertyGetter;
+import consulo.csharp.module.extension.BaseCSharpModuleExtension;
+import consulo.dotnet.compiler.DotNetCompilerOptionsBuilder;
+import consulo.roots.ModuleRootLayer;
 
 /**
  * @author VISTALL
- * @since 13.11.2015
+ * @since 22.02.2015
  */
-public interface ProjectElement extends JomElement
+public class KRuntimeCSharpModuleExtension extends BaseCSharpModuleExtension<KRuntimeCSharpModuleExtension>
 {
-	@JomPropertyGetter
-	String[] getAuthors();
+	public KRuntimeCSharpModuleExtension(@NotNull String id, @NotNull ModuleRootLayer module)
+	{
+		super(id, module);
+	}
 
 	@NotNull
-	@JomPropertyGetter
-	Map<String, String> getDependencies();
-
-	@NotNull
-	@JomPropertyGetter
-	Map<String, String> getCommands();
-
-	@NotNull
-	@JomPropertyGetter
-	Map<String, FrameworkElement> getFrameworks();
+	@Override
+	public DotNetCompilerOptionsBuilder createCompilerOptionsBuilder()
+	{
+		throw new IllegalArgumentException();
+	}
 }

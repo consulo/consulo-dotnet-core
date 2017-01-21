@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 must-be.org
+ * Copyright 2013-2017 must-be.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package org.mustbe.consulo.dnx.jom;
+package consulo.dnx.jom;
 
 import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
-import org.mustbe.consulo.RequiredReadAction;
-import org.mustbe.consulo.dnx.KRuntimeIcons;
-import org.mustbe.consulo.dnx.module.extension.KRuntimeModuleExtension;
-import org.mustbe.consulo.json.jom.JomFileDescriptor;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.psi.PsiFile;
+import consulo.dnx.KRuntimeIcons;
+import consulo.dnx.module.extension.KRuntimeModuleExtension;
+import consulo.json.jom.JomFileDescriptor;
 
 /**
  * @author VISTALL
@@ -45,7 +44,7 @@ public class ProjectFileDescriptor extends JomFileDescriptor<ProjectElement>
 	}
 
 	@Override
-	@RequiredReadAction
+	@consulo.annotations.RequiredReadAction
 	public boolean isMyFile(@NotNull PsiFile psiFile)
 	{
 		if(KRuntimeModuleExtension.PROJECT_JSON.equals(psiFile.getName()))

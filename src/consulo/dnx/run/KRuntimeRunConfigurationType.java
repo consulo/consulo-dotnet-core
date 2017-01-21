@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 must-be.org
+ * Copyright 2013-2017 must-be.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-package org.mustbe.consulo.dnx.run;
+package consulo.dnx.run;
 
 import org.jetbrains.annotations.NotNull;
-import org.mustbe.consulo.RequiredDispatchThread;
-import org.mustbe.consulo.dnx.KRuntimeIcons;
-import org.mustbe.consulo.dnx.jom.ProjectElement;
-import org.mustbe.consulo.dnx.module.extension.KRuntimeModuleExtension;
-import org.mustbe.consulo.module.extension.ModuleExtensionHelper;
 import com.intellij.execution.configuration.ConfigurationFactoryEx;
 import com.intellij.execution.configurations.ConfigurationTypeBase;
 import com.intellij.execution.configurations.RunConfiguration;
@@ -31,6 +26,11 @@ import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.containers.ContainerUtil;
+import consulo.annotations.RequiredDispatchThread;
+import consulo.dnx.KRuntimeIcons;
+import consulo.dnx.jom.ProjectElement;
+import consulo.dnx.module.extension.KRuntimeModuleExtension;
+import consulo.module.extension.ModuleExtensionHelper;
 
 /**
  * @author VISTALL

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 must-be.org
+ * Copyright 2013-2017 must-be.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.mustbe.consulo.dnx.run;
+package consulo.dnx.run;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -26,9 +26,9 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 
 import org.jetbrains.annotations.NotNull;
-import org.mustbe.consulo.RequiredDispatchThread;
-import org.mustbe.consulo.dnx.jom.ProjectElement;
-import org.mustbe.consulo.dnx.module.extension.KRuntimeModuleExtension;
+import consulo.annotations.RequiredDispatchThread;
+import consulo.dnx.jom.ProjectElement;
+import consulo.dnx.module.extension.KRuntimeModuleExtension;
 import com.intellij.application.options.ModuleListCellRenderer;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;

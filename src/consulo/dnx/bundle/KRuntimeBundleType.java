@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 must-be.org
+ * Copyright 2013-2017 must-be.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.mustbe.consulo.dnx.bundle;
+package consulo.dnx.bundle;
 
 import java.io.File;
 import java.util.Arrays;
@@ -26,7 +26,7 @@ import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mustbe.consulo.dnx.KRuntimeIcons;
+import consulo.dnx.KRuntimeIcons;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.process.ProcessOutput;
 import com.intellij.execution.util.ExecUtil;
@@ -184,7 +184,7 @@ public class KRuntimeBundleType extends SdkType
 		}
 		catch(ExecutionException e)
 		{
-			LOGGER.warn(e);
+			KRuntimeBundleType.LOGGER.warn(e);
 		}
 		return null;
 	}

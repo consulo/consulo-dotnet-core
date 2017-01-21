@@ -1,0 +1,7 @@
+<component name="libraryTable">
+  <library name="consulo-plugin: consulo.nuget" type="consulo-plugin">
+    <binaries>
+      <root url="jar://$PROJECT_DIR$/dep/consulo.nuget/lib/nuget.jar!/" />
+    </binaries>
+  </library>
+</component>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 must-be.org
+ * Copyright 2013-2017 must-be.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package org.mustbe.consulo.dnx.module.extension;
+package consulo.dnx.module.extension;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import org.consulo.module.extension.MutableModuleInheritableNamedPointer;
-import org.consulo.module.extension.ui.ModuleExtensionSdkBoxBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mustbe.consulo.RequiredDispatchThread;
-import org.mustbe.consulo.dotnet.module.extension.DotNetSimpleMutableModuleExtension;
 import com.intellij.openapi.projectRoots.Sdk;
-import com.intellij.openapi.roots.ModuleRootLayer;
 import com.intellij.openapi.ui.VerticalFlowLayout;
 import com.intellij.util.NullableFunction;
+import consulo.dotnet.module.extension.DotNetSimpleMutableModuleExtension;
+import consulo.extension.ui.ModuleExtensionSdkBoxBuilder;
+import consulo.module.extension.MutableModuleInheritableNamedPointer;
+import consulo.roots.ModuleRootLayer;
 
 /**
  * @author VISTALL
@@ -50,7 +49,7 @@ public class KRuntimeMutableModuleExtension extends KRuntimeModuleExtension impl
 
 	@Nullable
 	@Override
-	@RequiredDispatchThread
+	@consulo.annotations.RequiredDispatchThread
 	public JComponent createConfigurablePanel(@NotNull Runnable runnable)
 	{
 		ModuleExtensionSdkBoxBuilder<KRuntimeMutableModuleExtension> sdkBoxBuilder = ModuleExtensionSdkBoxBuilder.create(this, runnable);

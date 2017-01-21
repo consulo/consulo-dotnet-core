@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 must-be.org
+ * Copyright 2013-2017 must-be.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package org.mustbe.consulo.dnx.jom;
+package consulo.dnx.jom;
 
-import org.mustbe.consulo.json.jom.JomElement;
+import consulo.json.jom.JomElement;
 
 /**
  * @author VISTALL

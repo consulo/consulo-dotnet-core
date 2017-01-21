@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 must-be.org
+ * Copyright 2013-2017 must-be.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.mustbe.consulo.dnx.module.extension;
+package consulo.dnx.module.extension;
 
 import java.io.File;
 import java.util.Collections;
@@ -22,21 +22,20 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mustbe.consulo.RequiredReadAction;
-import org.mustbe.consulo.dnx.bundle.KRuntimeBundleType;
-import org.mustbe.consulo.dnx.jom.ProjectElement;
-import org.mustbe.consulo.dnx.util.KRuntimeUtil;
-import org.mustbe.consulo.dotnet.module.extension.BaseDotNetSimpleModuleExtension;
-import org.mustbe.consulo.json.jom.JomFileElement;
-import org.mustbe.consulo.json.jom.JomManager;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.projectRoots.SdkType;
-import com.intellij.openapi.roots.ModuleRootLayer;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.util.ArrayUtil;
+import consulo.dnx.bundle.KRuntimeBundleType;
+import consulo.dnx.jom.ProjectElement;
+import consulo.dnx.util.KRuntimeUtil;
+import consulo.dotnet.module.extension.BaseDotNetSimpleModuleExtension;
+import consulo.json.jom.JomFileElement;
+import consulo.json.jom.JomManager;
 import consulo.lombok.annotations.Lazy;
+import consulo.roots.ModuleRootLayer;
 
 /**
  * @author VISTALL
@@ -59,7 +58,7 @@ public class KRuntimeModuleExtension extends BaseDotNetSimpleModuleExtension<KRu
 	}
 
 	@Nullable
-	@RequiredReadAction
+	@consulo.annotations.RequiredReadAction
 	public ProjectElement getProjectElement()
 	{
 		VirtualFile moduleDir = getModule().getModuleDir();

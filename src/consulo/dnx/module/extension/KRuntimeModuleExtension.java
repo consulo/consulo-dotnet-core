@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.projectRoots.SdkType;
+import com.intellij.openapi.util.NotNullLazyValue;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
@@ -34,7 +35,6 @@ import consulo.dnx.util.KRuntimeUtil;
 import consulo.dotnet.module.extension.BaseDotNetSimpleModuleExtension;
 import consulo.json.jom.JomFileElement;
 import consulo.json.jom.JomManager;
-import consulo.lombok.annotations.Lazy;
 import consulo.roots.ModuleRootLayer;
 
 /**
@@ -43,6 +43,7 @@ import consulo.roots.ModuleRootLayer;
  */
 public class KRuntimeModuleExtension extends BaseDotNetSimpleModuleExtension<KRuntimeModuleExtension>
 {
+	private NotNullLazyValue<KRuntimeNuGetWorker> myWorkerValue = NotNullLazyValue.createValue(() -> new KRuntimeNuGetWorker(KRuntimeModuleExtension.this));
 	public static final String PROJECT_JSON = "project.json";
 
 	public KRuntimeModuleExtension(@NotNull String id, @NotNull ModuleRootLayer rootModel)
@@ -51,10 +52,9 @@ public class KRuntimeModuleExtension extends BaseDotNetSimpleModuleExtension<KRu
 	}
 
 	@NotNull
-	@Lazy
 	public KRuntimeNuGetWorker getWorker()
 	{
-		return new KRuntimeNuGetWorker(KRuntimeModuleExtension.this);
+		return myWorkerValue.getValue();
 	}
 
 	@Nullable

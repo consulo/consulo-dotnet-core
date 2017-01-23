@@ -26,24 +26,25 @@ import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import consulo.dnx.KRuntimeIcons;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.process.ProcessOutput;
 import com.intellij.execution.util.ExecUtil;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.projectRoots.SdkType;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.SmartList;
-import consulo.lombok.annotations.Logger;
+import consulo.dnx.KRuntimeIcons;
 
 /**
  * @author VISTALL
  * @since 22.02.2015
  */
-@Logger
 public class KRuntimeBundleType extends SdkType
 {
+	private static final Logger LOGGER = Logger.getInstance(KRuntimeBundleType.class);
+
 	public static enum RuntimeType
 	{
 		Unknown,

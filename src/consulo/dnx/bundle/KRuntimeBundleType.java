@@ -41,6 +41,7 @@ import consulo.dnx.KRuntimeIcons;
  * @author VISTALL
  * @since 22.02.2015
  */
+@Deprecated
 public class KRuntimeBundleType extends SdkType
 {
 	private static final Logger LOGGER = Logger.getInstance(KRuntimeBundleType.class);

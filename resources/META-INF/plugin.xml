@@ -29,7 +29,7 @@
 	</extensions>
 
 	<extensions defaultExtensionNs="com.intellij">
-		<sdkType implementation="consulo.dnx.bundle.KRuntimeBundleType"/>
+		<sdkType implementation="consulo.dotnet.core.bundle.DotNetCoreBundleType"/>
 
 		<moduleExtensionProvider key="dotnet-core"
 								 name=".NET Core"

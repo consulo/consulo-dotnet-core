@@ -1,1 +1,1 @@
-![Build Status](http://must-be.org/vulcan/statusImage?name=consulo-dnx)
+[![Build Status](https://ci.consulo.io/job/consulo-dotnet-core/badge/icon)](https://ci.consulo.io/job/consulo-dotnet-core/)

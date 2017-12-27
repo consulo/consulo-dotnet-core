@@ -53,6 +53,8 @@
 						<dependency>consulo.dotnet</dependency>
 						<dependency>com.intellij.xml</dependency>
 						<dependency>consulo.csharp</dependency>
+						<dependency>consulo.nuget</dependency>
+						<dependency>consulo.javascript</dependency>
 					</dependencies>
 					<packaging>
 						<skip>${dev.mode}</skip>
@@ -87,6 +89,18 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>com.intellij.xml</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>consulo.nuget</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>consulo.javascript</artifactId>
 			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>

@@ -16,10 +16,10 @@
 
 package consulo.dnx.csharp.module.extension;
 
+import javax.annotation.Nonnull;
 import javax.swing.JComponent;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import consulo.csharp.module.extension.CSharpLanguageVersion;
 import consulo.csharp.module.extension.CSharpMutableModuleExtension;
 import consulo.roots.ModuleRootLayer;
@@ -30,19 +30,19 @@ import consulo.roots.ModuleRootLayer;
  */
 public class KRuntimeCSharpMutableModuleExtension extends KRuntimeCSharpModuleExtension implements CSharpMutableModuleExtension<KRuntimeCSharpModuleExtension>
 {
-	public KRuntimeCSharpMutableModuleExtension(@NotNull String id, @NotNull ModuleRootLayer module)
+	public KRuntimeCSharpMutableModuleExtension(@Nonnull String id, @Nonnull ModuleRootLayer module)
 	{
 		super(id, module);
 	}
 
 	@Nullable
 	@Override
-	public JComponent createConfigurablePanel(@NotNull Runnable runnable)
+	public JComponent createConfigurablePanel(@Nonnull Runnable runnable)
 	{
 		return null;
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public CSharpLanguageVersion getLanguageVersion()
 	{
@@ -56,7 +56,7 @@ public class KRuntimeCSharpMutableModuleExtension extends KRuntimeCSharpModuleEx
 	}
 
 	@Override
-	public boolean isModified(@NotNull KRuntimeCSharpModuleExtension kRuntimeCSharpModuleExtension)
+	public boolean isModified(@Nonnull KRuntimeCSharpModuleExtension kRuntimeCSharpModuleExtension)
 	{
 		return isModifiedImpl(kRuntimeCSharpModuleExtension);
 	}

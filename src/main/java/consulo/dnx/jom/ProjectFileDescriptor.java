@@ -16,9 +16,9 @@
 
 package consulo.dnx.jom;
 
+import javax.annotation.Nonnull;
 import javax.swing.Icon;
 
-import org.jetbrains.annotations.NotNull;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.psi.PsiFile;
 import consulo.awt.TargetAWT;
@@ -37,7 +37,7 @@ public class ProjectFileDescriptor extends JomFileDescriptor<ProjectElement>
 		super(ProjectElement.class);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public Icon getIcon()
 	{
@@ -46,7 +46,7 @@ public class ProjectFileDescriptor extends JomFileDescriptor<ProjectElement>
 
 	@Override
 	@consulo.annotations.RequiredReadAction
-	public boolean isMyFile(@NotNull PsiFile psiFile)
+	public boolean isMyFile(@Nonnull PsiFile psiFile)
 	{
 		if(KRuntimeModuleExtension.PROJECT_JSON.equals(psiFile.getName()))
 		{

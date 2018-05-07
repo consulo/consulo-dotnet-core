@@ -18,7 +18,8 @@ package consulo.dnx.util;
 
 import java.io.File;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
+
 import com.intellij.openapi.util.SystemInfo;
 import com.sun.jna.platform.win32.Advapi32Util;
 import com.sun.jna.platform.win32.WinReg;

@@ -20,8 +20,9 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.projectRoots.SdkType;
 import com.intellij.openapi.util.NotNullLazyValue;
@@ -46,12 +47,12 @@ public class KRuntimeModuleExtension extends BaseDotNetSimpleModuleExtension<KRu
 	private NotNullLazyValue<KRuntimeNuGetWorker> myWorkerValue = NotNullLazyValue.createValue(() -> new KRuntimeNuGetWorker(KRuntimeModuleExtension.this));
 	public static final String PROJECT_JSON = "project.json";
 
-	public KRuntimeModuleExtension(@NotNull String id, @NotNull ModuleRootLayer rootModel)
+	public KRuntimeModuleExtension(@Nonnull String id, @Nonnull ModuleRootLayer rootModel)
 	{
 		super(id, rootModel);
 	}
 
-	@NotNull
+	@Nonnull
 	public KRuntimeNuGetWorker getWorker()
 	{
 		return myWorkerValue.getValue();
@@ -84,7 +85,7 @@ public class KRuntimeModuleExtension extends BaseDotNetSimpleModuleExtension<KRu
 		return fileElement.getRootElement();
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public File[] getFilesForLibraries()
 	{
@@ -106,7 +107,7 @@ public class KRuntimeModuleExtension extends BaseDotNetSimpleModuleExtension<KRu
 		return array;
 	}
 
-	@NotNull
+	@Nonnull
 	private List<String> getPathsForLibraries(@Nullable Sdk sdk)
 	{
 		String homePath = sdk == null ? null : sdk.getHomePath();
@@ -133,7 +134,7 @@ public class KRuntimeModuleExtension extends BaseDotNetSimpleModuleExtension<KRu
 		return Collections.emptyList();
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public Class<? extends SdkType> getSdkTypeClass()
 	{

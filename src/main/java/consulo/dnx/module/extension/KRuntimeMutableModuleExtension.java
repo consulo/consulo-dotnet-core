@@ -19,8 +19,8 @@ package consulo.dnx.module.extension;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.ui.VerticalFlowLayout;
 import com.intellij.util.NullableFunction;
@@ -35,12 +35,12 @@ import consulo.roots.ModuleRootLayer;
  */
 public class KRuntimeMutableModuleExtension extends KRuntimeModuleExtension implements DotNetSimpleMutableModuleExtension<KRuntimeModuleExtension>
 {
-	public KRuntimeMutableModuleExtension(@NotNull String id, @NotNull ModuleRootLayer rootModel)
+	public KRuntimeMutableModuleExtension(@Nonnull String id, @Nonnull ModuleRootLayer rootModel)
 	{
 		super(id, rootModel);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public MutableModuleInheritableNamedPointer<Sdk> getInheritableSdk()
 	{
@@ -50,7 +50,7 @@ public class KRuntimeMutableModuleExtension extends KRuntimeModuleExtension impl
 	@Nullable
 	@Override
 	@consulo.annotations.RequiredDispatchThread
-	public JComponent createConfigurablePanel(@NotNull Runnable runnable)
+	public JComponent createConfigurablePanel(@Nonnull Runnable runnable)
 	{
 		ModuleExtensionSdkBoxBuilder<KRuntimeMutableModuleExtension> sdkBoxBuilder = ModuleExtensionSdkBoxBuilder.create(this, runnable);
 		sdkBoxBuilder.sdkTypeClass(getSdkTypeClass());
@@ -76,7 +76,7 @@ public class KRuntimeMutableModuleExtension extends KRuntimeModuleExtension impl
 	}
 
 	@Override
-	public boolean isModified(@NotNull KRuntimeModuleExtension kModuleExtension)
+	public boolean isModified(@Nonnull KRuntimeModuleExtension kModuleExtension)
 	{
 		return isModifiedImpl(kModuleExtension);
 	}

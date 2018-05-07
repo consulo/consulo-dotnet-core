@@ -22,10 +22,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.Icon;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.process.ProcessOutput;
 import com.intellij.execution.util.ExecUtil;
@@ -82,7 +80,7 @@ public class KRuntimeBundleType extends SdkType
 		return new File(path, relativePath);
 	}
 
-	@NotNull
+	@Nonnull
 	public static RuntimeType getRuntimeType(@Nullable Sdk sdk)
 	{
 		if(sdk == null)
@@ -121,7 +119,7 @@ public class KRuntimeBundleType extends SdkType
 		super("K_RUNTIME_BUNDLE");
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public Collection<String> suggestHomePaths()
 	{
@@ -198,7 +196,7 @@ public class KRuntimeBundleType extends SdkType
 		return new File(sdkHome).getName();
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public String getPresentableName()
 	{

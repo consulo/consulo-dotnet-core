@@ -21,9 +21,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.jdom.Element;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 import consulo.dnx.bundle.KRuntimeBundleType;
 import consulo.dnx.module.extension.KRuntimeModuleExtension;
 import com.intellij.compiler.options.CompileStepBeforeRun;
@@ -79,7 +81,7 @@ public class KRuntimeRunConfiguration extends ModuleBasedConfiguration<RunConfig
 		return list;
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public SettingsEditor<? extends RunConfiguration> getConfigurationEditor()
 	{
@@ -88,11 +90,11 @@ public class KRuntimeRunConfiguration extends ModuleBasedConfiguration<RunConfig
 
 	@Nullable
 	@Override
-	public RunProfileState getState(@NotNull Executor executor, @NotNull final ExecutionEnvironment env) throws ExecutionException
+	public RunProfileState getState(@Nonnull Executor executor, @Nonnull final ExecutionEnvironment env) throws ExecutionException
 	{
 		return new CommandLineState(env)
 		{
-			@NotNull
+			@Nonnull
 			@Override
 			protected ProcessHandler startProcess() throws ExecutionException
 			{

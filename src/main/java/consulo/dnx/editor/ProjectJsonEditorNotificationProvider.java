@@ -16,8 +16,8 @@
 
 package consulo.dnx.editor;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtilCore;
@@ -45,7 +45,7 @@ public class ProjectJsonEditorNotificationProvider implements EditorNotification
 		myProject = project;
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public Key<EditorNotificationPanel> getKey()
 	{
@@ -55,7 +55,7 @@ public class ProjectJsonEditorNotificationProvider implements EditorNotification
 	@RequiredReadAction
 	@Nullable
 	@Override
-	public EditorNotificationPanel createNotificationPanel(@NotNull VirtualFile file, @NotNull FileEditor fileEditor)
+	public EditorNotificationPanel createNotificationPanel(@Nonnull VirtualFile file, @Nonnull FileEditor fileEditor)
 	{
 		if(file.getFileType() != JsonFileType.INSTANCE)
 		{

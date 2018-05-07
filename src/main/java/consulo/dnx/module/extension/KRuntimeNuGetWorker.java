@@ -20,8 +20,8 @@ import java.io.File;
 import java.util.Map;
 import java.util.Set;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.Consumer;
@@ -57,7 +57,7 @@ public class KRuntimeNuGetWorker extends NuGetBasedRepositoryWorker
 
 	@consulo.annotations.RequiredReadAction
 	@Override
-	protected void loadDefinedPackages(@NotNull Consumer<PackageInfo> packageInfoConsumer)
+	protected void loadDefinedPackages(@Nonnull Consumer<PackageInfo> packageInfoConsumer)
 	{
 		ProjectElement projectJsonModel = myExtension.getProjectElement();
 		if(projectJsonModel == null)
@@ -86,7 +86,7 @@ public class KRuntimeNuGetWorker extends NuGetBasedRepositoryWorker
 		}
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public String getNameAndVersionSeparator()
 	{

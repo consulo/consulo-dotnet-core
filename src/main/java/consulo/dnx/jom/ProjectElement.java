@@ -18,7 +18,7 @@ package consulo.dnx.jom;
 
 import java.util.Map;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import consulo.json.jom.JomElement;
 import consulo.json.jom.JomPropertyGetter;
 
@@ -31,15 +31,15 @@ public interface ProjectElement extends JomElement
 	@JomPropertyGetter
 	String[] getAuthors();
 
-	@NotNull
+	@Nonnull
 	@JomPropertyGetter
 	Map<String, String> getDependencies();
 
-	@NotNull
+	@Nonnull
 	@JomPropertyGetter
 	Map<String, String> getCommands();
 
-	@NotNull
+	@Nonnull
 	@JomPropertyGetter
 	Map<String, FrameworkElement> getFrameworks();
 }

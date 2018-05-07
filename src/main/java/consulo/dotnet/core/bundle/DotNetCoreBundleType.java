@@ -22,10 +22,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.swing.Icon;
+import javax.annotation.Nonnull;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import com.intellij.openapi.projectRoots.SdkType;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.util.SystemInfo;
@@ -40,7 +39,7 @@ import consulo.ui.image.Image;
  */
 public class DotNetCoreBundleType extends SdkType
 {
-	@NotNull
+	@Nonnull
 	public static String getExecutable()
 	{
 		if(SystemInfo.isWindows)
@@ -50,7 +49,7 @@ public class DotNetCoreBundleType extends SdkType
 		return "dotnet";
 	}
 
-	@NotNull
+	@Nonnull
 	public static DotNetCoreBundleType getInstance()
 	{
 		return EP_NAME.findExtension(DotNetCoreBundleType.class);
@@ -110,7 +109,7 @@ public class DotNetCoreBundleType extends SdkType
 		return ".NET Core " + getVersionString(sdkHome);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public Collection<String> suggestHomePaths()
 	{
@@ -138,7 +137,7 @@ public class DotNetCoreBundleType extends SdkType
 		return true;
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public String getPresentableName()
 	{

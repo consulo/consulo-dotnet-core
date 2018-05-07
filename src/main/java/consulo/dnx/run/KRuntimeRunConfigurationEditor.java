@@ -25,7 +25,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JList;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import consulo.annotations.RequiredDispatchThread;
 import consulo.dnx.jom.ProjectElement;
 import consulo.dnx.module.extension.KRuntimeModuleExtension;
@@ -73,7 +73,7 @@ public class KRuntimeRunConfigurationEditor extends SettingsEditor<KRuntimeRunCo
 		runConfiguration.setCommand((String) myCommandComboBox.getSelectedItem());
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	@RequiredDispatchThread
 	protected JComponent createEditor()

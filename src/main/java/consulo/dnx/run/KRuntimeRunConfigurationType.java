@@ -16,7 +16,8 @@
 
 package consulo.dnx.run;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import com.intellij.execution.configuration.ConfigurationFactoryEx;
 import com.intellij.execution.configurations.ConfigurationTypeBase;
 import com.intellij.execution.configurations.RunConfiguration;
@@ -57,7 +58,7 @@ public class KRuntimeRunConfigurationType extends ConfigurationTypeBase
 
 			@Override
 			@RequiredDispatchThread
-			public void onNewConfigurationCreated(@NotNull RunConfiguration configuration)
+			public void onNewConfigurationCreated(@Nonnull RunConfiguration configuration)
 			{
 				KRuntimeRunConfiguration conf = (KRuntimeRunConfiguration) configuration;
 
@@ -85,7 +86,7 @@ public class KRuntimeRunConfigurationType extends ConfigurationTypeBase
 			}
 
 			@Override
-			public boolean isApplicable(@NotNull Project project)
+			public boolean isApplicable(@Nonnull Project project)
 			{
 				return ModuleExtensionHelper.getInstance(project).hasModuleExtension(KRuntimeModuleExtension.class);
 			}

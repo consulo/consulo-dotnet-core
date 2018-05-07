@@ -16,7 +16,7 @@
 
 package consulo.dnx.csharp.module.extension;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import consulo.csharp.module.extension.BaseCSharpModuleExtension;
 import consulo.dotnet.compiler.DotNetCompilerOptionsBuilder;
 import consulo.roots.ModuleRootLayer;
@@ -27,12 +27,12 @@ import consulo.roots.ModuleRootLayer;
  */
 public class KRuntimeCSharpModuleExtension extends BaseCSharpModuleExtension<KRuntimeCSharpModuleExtension>
 {
-	public KRuntimeCSharpModuleExtension(@NotNull String id, @NotNull ModuleRootLayer module)
+	public KRuntimeCSharpModuleExtension(@Nonnull String id, @Nonnull ModuleRootLayer module)
 	{
 		super(id, module);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public DotNetCompilerOptionsBuilder createCompilerOptionsBuilder()
 	{

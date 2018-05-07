@@ -21,6 +21,7 @@ import javax.swing.Icon;
 import org.jetbrains.annotations.NotNull;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.psi.PsiFile;
+import consulo.awt.TargetAWT;
 import consulo.dnx.KRuntimeIcons;
 import consulo.dnx.module.extension.KRuntimeModuleExtension;
 import consulo.json.jom.JomFileDescriptor;
@@ -40,7 +41,7 @@ public class ProjectFileDescriptor extends JomFileDescriptor<ProjectElement>
 	@Override
 	public Icon getIcon()
 	{
-		return KRuntimeIcons.DotnetFoundation;
+		return TargetAWT.to(KRuntimeIcons.DotnetFoundation);
 	}
 
 	@Override

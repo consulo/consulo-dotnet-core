@@ -36,6 +36,7 @@ import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.SmartList;
 import consulo.dnx.KRuntimeIcons;
+import consulo.ui.image.Image;
 
 /**
  * @author VISTALL
@@ -206,7 +207,7 @@ public class KRuntimeBundleType extends SdkType
 
 	@Nullable
 	@Override
-	public Icon getIcon()
+	public Image getIcon()
 	{
 		return KRuntimeIcons.DotnetFoundation;
 	}

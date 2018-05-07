@@ -16,12 +16,11 @@
 
 package consulo.dnx;
 
-import javax.swing.Icon;
-
 import com.intellij.openapi.util.IconLoader;
+import consulo.ui.image.Image;
 
 // Generated Consulo DevKit plugin 
 public interface KRuntimeIcons
 {
-	Icon DotnetFoundation = IconLoader.getIcon("/icons/dotnetFoundation.png");  // 16x16
+	Image DotnetFoundation = IconLoader.getIcon("/icons/dotnetFoundation.png");  // 16x16
 }

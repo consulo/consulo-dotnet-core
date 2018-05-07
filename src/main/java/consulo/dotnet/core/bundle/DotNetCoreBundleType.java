@@ -32,6 +32,7 @@ import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.io.FileUtil;
 import consulo.dotnet.core.DotNetCoreIcons;
 import consulo.dotnet.externalAttributes.ExternalAttributesRootOrderType;
+import consulo.ui.image.Image;
 
 /**
  * @author VISTALL
@@ -146,7 +147,7 @@ public class DotNetCoreBundleType extends SdkType
 
 	@Nullable
 	@Override
-	public Icon getIcon()
+	public Image getIcon()
 	{
 		return DotNetCoreIcons.DotnetFoundation;
 	}

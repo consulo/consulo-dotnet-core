@@ -17,14 +17,13 @@
 package consulo.dnx.jom;
 
 import javax.annotation.Nonnull;
-import javax.swing.Icon;
 
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.psi.PsiFile;
-import consulo.awt.TargetAWT;
 import consulo.dnx.KRuntimeIcons;
 import consulo.dnx.module.extension.KRuntimeModuleExtension;
 import consulo.json.jom.JomFileDescriptor;
+import consulo.ui.image.Image;
 
 /**
  * @author VISTALL
@@ -39,9 +38,9 @@ public class ProjectFileDescriptor extends JomFileDescriptor<ProjectElement>
 
 	@Nonnull
 	@Override
-	public Icon getIcon()
+	public Image getIcon()
 	{
-		return TargetAWT.to(KRuntimeIcons.DotnetFoundation);
+		return KRuntimeIcons.DotnetFoundation;
 	}
 
 	@Override

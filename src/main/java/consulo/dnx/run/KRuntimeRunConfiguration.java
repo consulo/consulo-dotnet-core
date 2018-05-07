@@ -22,12 +22,9 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.jdom.Element;
-
-import javax.annotation.Nullable;
-import consulo.dnx.bundle.KRuntimeBundleType;
-import consulo.dnx.module.extension.KRuntimeModuleExtension;
 import com.intellij.compiler.options.CompileStepBeforeRun;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
@@ -48,6 +45,8 @@ import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.WriteExternalException;
+import consulo.dnx.bundle.KRuntimeBundleType;
+import consulo.dnx.module.extension.KRuntimeModuleExtension;
 
 /**
  * @author VISTALL
@@ -139,7 +138,6 @@ public class KRuntimeRunConfiguration extends ModuleBasedConfiguration<RunConfig
 	public void readExternal(Element element) throws InvalidDataException
 	{
 		super.readExternal(element);
-		readModule(element);
 		myCommand = element.getChildText("command");
 	}
 
@@ -147,7 +145,6 @@ public class KRuntimeRunConfiguration extends ModuleBasedConfiguration<RunConfig
 	public void writeExternal(Element element) throws WriteExternalException
 	{
 		super.writeExternal(element);
-		writeModule(element);
 		if(myCommand != null)
 		{
 			element.addContent(new Element("command").setText(myCommand));

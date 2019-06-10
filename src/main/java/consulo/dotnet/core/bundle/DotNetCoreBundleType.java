@@ -52,7 +52,7 @@ public class DotNetCoreBundleType extends SdkType
 	@Nonnull
 	public static DotNetCoreBundleType getInstance()
 	{
-		return EP_NAME.findExtension(DotNetCoreBundleType.class);
+		return EP_NAME.findExtensionOrFail(DotNetCoreBundleType.class);
 	}
 
 	public DotNetCoreBundleType()

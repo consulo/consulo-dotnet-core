@@ -16,19 +16,6 @@
 
 package consulo.dnx.run;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.Collections;
-import java.util.Set;
-
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JList;
-
-import javax.annotation.Nonnull;
-import consulo.annotations.RequiredDispatchThread;
-import consulo.dnx.jom.ProjectElement;
-import consulo.dnx.module.extension.KRuntimeModuleExtension;
 import com.intellij.application.options.ModuleListCellRenderer;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -40,6 +27,16 @@ import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.ColoredListCellRendererWrapper;
 import com.intellij.ui.SimpleTextAttributes;
 import com.intellij.util.ui.FormBuilder;
+import consulo.dnx.jom.ProjectElement;
+import consulo.dnx.module.extension.KRuntimeModuleExtension;
+import consulo.ui.annotation.RequiredUIAccess;
+
+import javax.annotation.Nonnull;
+import javax.swing.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * @author VISTALL
@@ -75,7 +72,7 @@ public class KRuntimeRunConfigurationEditor extends SettingsEditor<KRuntimeRunCo
 
 	@Nonnull
 	@Override
-	@RequiredDispatchThread
+	@RequiredUIAccess
 	protected JComponent createEditor()
 	{
 		myModuleComboBox = new ComboBox();
@@ -90,7 +87,7 @@ public class KRuntimeRunConfigurationEditor extends SettingsEditor<KRuntimeRunCo
 		myModuleComboBox.addItemListener(new ItemListener()
 		{
 			@Override
-			@RequiredDispatchThread
+			@RequiredUIAccess
 			public void itemStateChanged(ItemEvent e)
 			{
 				if(e.getStateChange() == ItemEvent.SELECTED)
@@ -130,7 +127,7 @@ public class KRuntimeRunConfigurationEditor extends SettingsEditor<KRuntimeRunCo
 		return formBuilder.getPanel();
 	}
 
-	@RequiredDispatchThread
+	@RequiredUIAccess
 	private void refreshCommandBox(boolean select)
 	{
 		String commandSelectedItem = (String) myCommandComboBox.getSelectedItem();

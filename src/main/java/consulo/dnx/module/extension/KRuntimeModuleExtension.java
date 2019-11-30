@@ -16,13 +16,6 @@
 
 package consulo.dnx.module.extension;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.projectRoots.SdkType;
 import com.intellij.openapi.util.NotNullLazyValue;
@@ -30,6 +23,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.util.ArrayUtil;
+import consulo.annotation.access.RequiredReadAction;
 import consulo.dnx.bundle.KRuntimeBundleType;
 import consulo.dnx.jom.ProjectElement;
 import consulo.dnx.util.KRuntimeUtil;
@@ -37,6 +31,12 @@ import consulo.dotnet.module.extension.BaseDotNetSimpleModuleExtension;
 import consulo.json.jom.JomFileElement;
 import consulo.json.jom.JomManager;
 import consulo.roots.ModuleRootLayer;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author VISTALL
@@ -59,7 +59,7 @@ public class KRuntimeModuleExtension extends BaseDotNetSimpleModuleExtension<KRu
 	}
 
 	@Nullable
-	@consulo.annotations.RequiredReadAction
+	@RequiredReadAction
 	public ProjectElement getProjectElement()
 	{
 		VirtualFile moduleDir = getModule().getModuleDir();

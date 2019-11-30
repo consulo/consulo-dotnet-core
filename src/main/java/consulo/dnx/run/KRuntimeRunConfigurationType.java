@@ -16,8 +16,6 @@
 
 package consulo.dnx.run;
 
-import javax.annotation.Nonnull;
-
 import com.intellij.execution.configuration.ConfigurationFactoryEx;
 import com.intellij.execution.configurations.ConfigurationTypeBase;
 import com.intellij.execution.configurations.RunConfiguration;
@@ -27,11 +25,13 @@ import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.containers.ContainerUtil;
-import consulo.annotations.RequiredDispatchThread;
 import consulo.dnx.KRuntimeIcons;
 import consulo.dnx.jom.ProjectElement;
 import consulo.dnx.module.extension.KRuntimeModuleExtension;
 import consulo.module.extension.ModuleExtensionHelper;
+import consulo.ui.annotation.RequiredUIAccess;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author VISTALL
@@ -57,7 +57,7 @@ public class KRuntimeRunConfigurationType extends ConfigurationTypeBase
 			}
 
 			@Override
-			@RequiredDispatchThread
+			@RequiredUIAccess
 			public void onNewConfigurationCreated(@Nonnull RunConfiguration configuration)
 			{
 				KRuntimeRunConfiguration conf = (KRuntimeRunConfiguration) configuration;

@@ -16,11 +16,6 @@
 
 package consulo.dnx.module.extension;
 
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.ui.VerticalFlowLayout;
 import com.intellij.util.NullableFunction;
@@ -28,6 +23,11 @@ import consulo.dotnet.module.extension.DotNetSimpleMutableModuleExtension;
 import consulo.extension.ui.ModuleExtensionSdkBoxBuilder;
 import consulo.module.extension.MutableModuleInheritableNamedPointer;
 import consulo.roots.ModuleRootLayer;
+import consulo.ui.annotation.RequiredUIAccess;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.*;
 
 /**
  * @author VISTALL
@@ -49,7 +49,7 @@ public class KRuntimeMutableModuleExtension extends KRuntimeModuleExtension impl
 
 	@Nullable
 	@Override
-	@consulo.annotations.RequiredDispatchThread
+	@RequiredUIAccess
 	public JComponent createConfigurablePanel(@Nonnull Runnable runnable)
 	{
 		ModuleExtensionSdkBoxBuilder<KRuntimeMutableModuleExtension> sdkBoxBuilder = ModuleExtensionSdkBoxBuilder.create(this, runnable);

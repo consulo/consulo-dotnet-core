@@ -16,8 +16,6 @@
 
 package consulo.dnx.editor;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtilCore;
@@ -25,10 +23,13 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.EditorNotificationPanel;
-import consulo.annotations.RequiredReadAction;
+import consulo.annotation.access.RequiredReadAction;
 import consulo.dnx.module.extension.KRuntimeModuleExtension;
 import consulo.editor.notifications.EditorNotificationProvider;
 import consulo.json.JsonFileType;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author VISTALL

@@ -14,7 +14,7 @@
   - limitations under the License.
   -->
 
-<idea-plugin>
+<consulo-plugin>
 	<id>consulo.dotnet.core</id>
 	<name>.NET Core</name>
 	<version>SNAPSHOT</version>
@@ -48,4 +48,4 @@
 
 		<configurationType implementation="consulo.dnx.run.KRuntimeRunConfigurationType" />
 	</extensions>
-</idea-plugin>
+</consulo-plugin>

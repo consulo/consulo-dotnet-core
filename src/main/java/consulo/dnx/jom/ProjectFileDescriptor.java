@@ -16,14 +16,15 @@
 
 package consulo.dnx.jom;
 
-import javax.annotation.Nonnull;
-
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.psi.PsiFile;
+import consulo.annotation.access.RequiredReadAction;
 import consulo.dnx.KRuntimeIcons;
 import consulo.dnx.module.extension.KRuntimeModuleExtension;
 import consulo.json.jom.JomFileDescriptor;
 import consulo.ui.image.Image;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author VISTALL
@@ -44,7 +45,7 @@ public class ProjectFileDescriptor extends JomFileDescriptor<ProjectElement>
 	}
 
 	@Override
-	@consulo.annotations.RequiredReadAction
+	@RequiredReadAction
 	public boolean isMyFile(@Nonnull PsiFile psiFile)
 	{
 		if(KRuntimeModuleExtension.PROJECT_JSON.equals(psiFile.getName()))

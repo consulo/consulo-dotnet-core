@@ -16,18 +16,19 @@
 
 package consulo.dnx.module.extension;
 
-import java.io.File;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.Consumer;
 import com.intellij.util.SystemProperties;
+import consulo.annotation.access.RequiredReadAction;
 import consulo.dnx.jom.ProjectElement;
 import consulo.nuget.module.extension.NuGetBasedRepositoryWorker;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.File;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author VISTALL
@@ -55,7 +56,7 @@ public class KRuntimeNuGetWorker extends NuGetBasedRepositoryWorker
 	{
 	}
 
-	@consulo.annotations.RequiredReadAction
+	@RequiredReadAction
 	@Override
 	protected void loadDefinedPackages(@Nonnull Consumer<PackageInfo> packageInfoConsumer)
 	{

@@ -20,7 +20,6 @@ import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.EditorNotificationPanel;
 import consulo.annotation.access.RequiredReadAction;
@@ -37,20 +36,11 @@ import javax.annotation.Nullable;
  */
 public class ProjectJsonEditorNotificationProvider implements EditorNotificationProvider<EditorNotificationPanel>
 {
-	public static final Key<EditorNotificationPanel> KEY = Key.create("ProjectJsonEditorNotificationProvider");
-
 	private final Project myProject;
 
 	public ProjectJsonEditorNotificationProvider(Project project)
 	{
 		myProject = project;
-	}
-
-	@Nonnull
-	@Override
-	public Key<EditorNotificationPanel> getKey()
-	{
-		return KEY;
 	}
 
 	@RequiredReadAction

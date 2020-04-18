@@ -1,5 +1,5 @@
 <!--
-  - Copyright 2013-2017 consulo.io
+  - Copyright 2013-2020 consulo.io
   -
   - Licensed under the Apache License, Version 2.0 (the "License");
   - you may not use this file except in compliance with the License.
@@ -21,31 +21,9 @@
 	<vendor>consulo.io</vendor>
 	<depends>consulo.dotnet</depends>
 	<depends>consulo.csharp</depends>
-	<depends>consulo.javascript</depends>
 	<depends>consulo.nuget</depends>
-
-	<extensions defaultExtensionNs="consulo.javascript">
-		<jomFileDescriptor implementation="consulo.dnx.jom.ProjectFileDescriptor" />
-	</extensions>
 
 	<extensions defaultExtensionNs="com.intellij">
 		<sdkType implementation="consulo.dotnet.core.bundle.DotNetCoreBundleType"/>
-
-		<moduleExtensionProvider key="dotnet-core"
-								 name=".NET Core"
-								 icon="/icons/dotnetFoundation.png"
-								 immutableClass="consulo.dnx.module.extension.KRuntimeModuleExtension"
-								 mutableClass="consulo.dnx.module.extension.KRuntimeMutableModuleExtension"/>
-
-		<moduleExtensionProvider key="dotnet-core-csharp"
-								 parentKey="k-runtime"
-								 icon="/icons/dotnetFoundation.png"
-								 name="C#"
-								 immutableClass="consulo.dnx.csharp.module.extension.KRuntimeCSharpModuleExtension"
-								 mutableClass="consulo.dnx.csharp.module.extension.KRuntimeCSharpMutableModuleExtension"/>
-
-		<editorNotificationProvider implementation="consulo.dnx.editor.ProjectJsonEditorNotificationProvider" />
-
-		<configurationType implementation="consulo.dnx.run.KRuntimeRunConfigurationType" />
 	</extensions>
 </consulo-plugin>

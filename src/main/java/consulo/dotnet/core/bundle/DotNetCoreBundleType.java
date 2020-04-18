@@ -31,6 +31,7 @@ import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.io.FileUtil;
 import consulo.dotnet.core.DotNetCoreIcons;
 import consulo.dotnet.externalAttributes.ExternalAttributesRootOrderType;
+import consulo.platform.Platform;
 import consulo.ui.image.Image;
 
 /**
@@ -42,7 +43,7 @@ public class DotNetCoreBundleType extends SdkType
 	@Nonnull
 	public static String getExecutable()
 	{
-		if(SystemInfo.isWindows)
+		if(Platform.current().os().isWindows())
 		{
 			return "dotnet.exe";
 		}
@@ -90,7 +91,6 @@ public class DotNetCoreBundleType extends SdkType
 					catch(IOException ignored)
 					{
 					}
-
 				}
 			}
 		}
@@ -124,7 +124,7 @@ public class DotNetCoreBundleType extends SdkType
 
 	private void collectFromProgramFiles(List<String> paths, String env)
 	{
-		String path = System.getenv(env);
+		String path = Platform.current().os().getEnvironmentVariable(env);
 		if(path != null)
 		{
 			paths.add(path + "/dotnet");

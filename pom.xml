@@ -53,8 +53,6 @@
 						<dependency>consulo.dotnet</dependency>
 						<dependency>com.intellij.xml</dependency>
 						<dependency>consulo.csharp</dependency>
-						<dependency>consulo.nuget</dependency>
-						<dependency>consulo.javascript</dependency>
 					</dependencies>
 					<packaging>
 						<skip>${dev.mode}</skip>

@@ -68,7 +68,7 @@ public class DotNetCoreBundleType extends SdkType
 	@Override
 	public boolean isValidSdkHome(String path)
 	{
-		return new File(new File(path, "./../../"), getExecutable()).exists() && getVersionString(path) != null;
+		return getExecutablePath(path).exists() && getVersionString(path) != null;
 	}
 
 	@Nullable

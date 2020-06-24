@@ -16,23 +16,21 @@
 
 package consulo.dotnet.core.bundle;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
-import javax.annotation.Nullable;
 import com.intellij.openapi.projectRoots.SdkType;
 import com.intellij.openapi.roots.OrderRootType;
-import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.io.FileUtil;
 import consulo.dotnet.core.DotNetCoreIcons;
 import consulo.dotnet.externalAttributes.ExternalAttributesRootOrderType;
 import consulo.platform.Platform;
 import consulo.ui.image.Image;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author VISTALL
@@ -51,6 +49,12 @@ public class DotNetCoreBundleType extends SdkType
 	}
 
 	@Nonnull
+	public static File getExecutablePath(@Nonnull String sdkHome)
+	{
+		return new File(new File(sdkHome, "./../../"), getExecutable());
+	}
+
+	@Nonnull
 	public static DotNetCoreBundleType getInstance()
 	{
 		return EP_NAME.findExtensionOrFail(DotNetCoreBundleType.class);
@@ -64,34 +68,26 @@ public class DotNetCoreBundleType extends SdkType
 	@Override
 	public boolean isValidSdkHome(String path)
 	{
-		return new File(path, getExecutable()).exists() && getVersionString(path) != null;
+		return new File(new File(path, "./../../"), getExecutable()).exists() && getVersionString(path) != null;
 	}
 
 	@Nullable
 	@Override
 	public String getVersionString(String sdkHome)
 	{
-		File file = new File(sdkHome, "sdk");
-		if(file.exists())
+		File versionFile = new File(sdkHome, ".version");
+		if(versionFile.exists())
 		{
-			File[] files = file.listFiles();
-			if(files != null && files.length > 0)
+			try
 			{
-				File versionFile = new File(files[0], ".version");
-				if(versionFile.exists())
+				List<String> lines = FileUtil.loadLines(versionFile);
+				if(lines.size() == 3)
 				{
-					try
-					{
-						List<String> lines = FileUtil.loadLines(versionFile);
-						if(lines.size() == 3)
-						{
-							return lines.get(1);
-						}
-					}
-					catch(IOException ignored)
-					{
-					}
+					return lines.get(1);
 				}
+			}
+			catch(IOException ignored)
+			{
 			}
 		}
 		return null;
@@ -114,20 +110,32 @@ public class DotNetCoreBundleType extends SdkType
 	public Collection<String> suggestHomePaths()
 	{
 		List<String> list = new ArrayList<>();
-		if(SystemInfo.isWindows)
+		Platform platform = Platform.current();
+		if(platform.os().isWindows())
 		{
-			collectFromProgramFiles(list, "ProgramFiles");
-			collectFromProgramFiles(list, "ProgramFiles(x86)");
+			collectFromProgramFiles(platform, list, "ProgramFiles");
+			collectFromProgramFiles(platform, list, "ProgramFiles(x86)");
 		}
 		return list;
 	}
 
-	private void collectFromProgramFiles(List<String> paths, String env)
+	private void collectFromProgramFiles(Platform platform, List<String> paths, String env)
 	{
-		String path = Platform.current().os().getEnvironmentVariable(env);
+		String path = platform.os().getEnvironmentVariable(env);
 		if(path != null)
 		{
-			paths.add(path + "/dotnet");
+			File dotnetSdk = new File(path, "/dotnet/sdk");
+			if(dotnetSdk.exists())
+			{
+				File[] list = dotnetSdk.listFiles();
+				if(list != null)
+				{
+					for(File file : list)
+					{
+						paths.add(file.getPath());
+					}
+				}
+			}
 		}
 	}
 

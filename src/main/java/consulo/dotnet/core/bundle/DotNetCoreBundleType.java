@@ -19,8 +19,8 @@ package consulo.dotnet.core.bundle;
 import com.intellij.openapi.projectRoots.SdkType;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.util.io.FileUtil;
-import consulo.dotnet.core.DotNetCoreIcons;
 import consulo.dotnet.externalAttributes.ExternalAttributesRootOrderType;
+import consulo.dotnet.icon.DotNetIconGroup;
 import consulo.platform.Platform;
 import consulo.ui.image.Image;
 
@@ -156,6 +156,6 @@ public class DotNetCoreBundleType extends SdkType
 	@Override
 	public Image getIcon()
 	{
-		return DotNetCoreIcons.DotnetFoundation;
+		return DotNetIconGroup.netFoundation();
 	}
 }

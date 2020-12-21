@@ -16,7 +16,8 @@
 
 <consulo-plugin>
 	<id>consulo.dotnet.core</id>
-	<name>.NET Core</name>
+	<name>.NET (previously named .NET Core)</name>
+	<category>Software Framework</category>
 	<version>SNAPSHOT</version>
 	<vendor>consulo.io</vendor>
 	<depends>consulo.dotnet</depends>

@@ -102,7 +102,7 @@ public class DotNetCoreBundleType extends SdkType
 	@Override
 	public String suggestSdkName(String currentSdkName, String sdkHome)
 	{
-		return ".NET Core " + getVersionString(sdkHome);
+		return ".NET " + getVersionString(sdkHome);
 	}
 
 	@Nonnull
@@ -149,7 +149,7 @@ public class DotNetCoreBundleType extends SdkType
 	@Override
 	public String getPresentableName()
 	{
-		return ".NET Core";
+		return ".NET (.NET Core)";
 	}
 
 	@Nullable

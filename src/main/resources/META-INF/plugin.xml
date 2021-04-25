@@ -22,7 +22,6 @@
 	<vendor>consulo.io</vendor>
 	<depends>consulo.dotnet</depends>
 	<depends>consulo.csharp</depends>
-	<experimental>true</experimental>
 
 	<extensions defaultExtensionNs="com.intellij">
 		<sdkType implementation="consulo.dotnet.core.bundle.DotNetCoreBundleType"/>

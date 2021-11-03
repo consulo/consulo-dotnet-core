@@ -23,6 +23,10 @@
 	<depends>consulo.dotnet</depends>
 	<depends>consulo.csharp</depends>
 
+	<tags>
+		<tag>software.framework</tag>
+	</tags>
+
 	<extensions defaultExtensionNs="com.intellij">
 		<sdkType implementation="consulo.dotnet.core.bundle.DotNetCoreBundleType"/>
 	</extensions>

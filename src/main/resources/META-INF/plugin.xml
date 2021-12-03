@@ -14,7 +14,7 @@
   - limitations under the License.
   -->
 
-<consulo-plugin>
+<consulo-plugin url="https://github.com/consulo/incubating-consulo-dotnet-core">
 	<id>consulo.dotnet.core</id>
 	<name>.NET (previously named .NET Core)</name>
 	<category>Software Framework</category>

@@ -16,11 +16,12 @@
 
 package consulo.dotnet.core.bundle;
 
-import com.intellij.openapi.projectRoots.SdkType;
+import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.util.io.FileUtil;
 import consulo.dotnet.externalAttributes.ExternalAttributesRootOrderType;
 import consulo.dotnet.icon.DotNetIconGroup;
+import consulo.dotnet.sdk.DotNetSdkType;
 import consulo.platform.Platform;
 import consulo.ui.image.Image;
 
@@ -36,7 +37,7 @@ import java.util.List;
  * @author VISTALL
  * @since 02-Feb-17
  */
-public class DotNetCoreBundleType extends SdkType
+public class DotNetCoreBundleType extends DotNetSdkType
 {
 	@Nonnull
 	public static String getExecutable()
@@ -166,5 +167,12 @@ public class DotNetCoreBundleType extends SdkType
 	public Image getIcon()
 	{
 		return DotNetIconGroup.netFoundation();
+	}
+
+	@Nonnull
+	@Override
+	public File getLoaderFile(@Nonnull Sdk sdk)
+	{
+		throw new UnsupportedOperationException();
 	}
 }

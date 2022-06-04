@@ -21,7 +21,6 @@
 	<version>SNAPSHOT</version>
 	<vendor>consulo.io</vendor>
 	<depends>consulo.dotnet</depends>
-	<depends>consulo.csharp</depends>
 
 	<tags>
 		<tag>software.framework</tag>

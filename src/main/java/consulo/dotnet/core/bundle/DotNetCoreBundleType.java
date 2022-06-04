@@ -109,14 +109,19 @@ public class DotNetCoreBundleType extends SdkType
 	@Override
 	public Collection<String> suggestHomePaths()
 	{
-		List<String> list = new ArrayList<>();
+		List<String> result = new ArrayList<>();
 		Platform platform = Platform.current();
-		if(platform.os().isWindows())
+		Platform.OperatingSystem os = platform.os();
+		if(os.isWindows())
 		{
-			collectFromProgramFiles(platform, list, "ProgramFiles");
-			collectFromProgramFiles(platform, list, "ProgramFiles(x86)");
+			collectFromProgramFiles(platform, result, "ProgramFiles");
+			collectFromProgramFiles(platform, result, "ProgramFiles(x86)");
 		}
-		return list;
+		else if(os.isMac())
+		{
+			collectSdkPaths(new File("/usr/local/share/dotnet/sdk"), result);
+		}
+		return result;
 	}
 
 	private void collectFromProgramFiles(Platform platform, List<String> paths, String env)
@@ -124,16 +129,20 @@ public class DotNetCoreBundleType extends SdkType
 		String path = platform.os().getEnvironmentVariable(env);
 		if(path != null)
 		{
-			File dotnetSdk = new File(path, "/dotnet/sdk");
-			if(dotnetSdk.exists())
+			collectSdkPaths(new File(path, "/dotnet/sdk"), paths);
+		}
+	}
+
+	private void collectSdkPaths(File dotnetSdk, List<String> paths)
+	{
+		if(dotnetSdk.exists())
+		{
+			File[] list = dotnetSdk.listFiles();
+			if(list != null)
 			{
-				File[] list = dotnetSdk.listFiles();
-				if(list != null)
+				for(File file : list)
 				{
-					for(File file : list)
-					{
-						paths.add(file.getPath());
-					}
+					paths.add(file.getPath());
 				}
 			}
 		}

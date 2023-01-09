@@ -29,8 +29,4 @@
 	<permissions>
 		<permission type="GET_ENV"/>
 	</permissions>
-
-	<extensions defaultExtensionNs="com.intellij">
-		<sdkType implementation="consulo.dotnet.core.bundle.DotNetCoreBundleType"/>
-	</extensions>
 </consulo-plugin>

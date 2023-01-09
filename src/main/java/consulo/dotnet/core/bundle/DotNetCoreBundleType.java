@@ -16,14 +16,15 @@
 
 package consulo.dotnet.core.bundle;
 
-import com.intellij.openapi.projectRoots.Sdk;
-import com.intellij.openapi.roots.OrderRootType;
-import com.intellij.openapi.util.io.FileUtil;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.content.OrderRootType;
+import consulo.content.bundle.Sdk;
 import consulo.dotnet.externalAttributes.ExternalAttributesRootOrderType;
 import consulo.dotnet.icon.DotNetIconGroup;
 import consulo.dotnet.sdk.DotNetSdkType;
 import consulo.platform.Platform;
 import consulo.ui.image.Image;
+import consulo.util.io.FileUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,142 +38,116 @@ import java.util.List;
  * @author VISTALL
  * @since 02-Feb-17
  */
-public class DotNetCoreBundleType extends DotNetSdkType
-{
-	@Nonnull
-	public static String getExecutable()
-	{
-		if(Platform.current().os().isWindows())
-		{
-			return "dotnet.exe";
-		}
-		return "dotnet";
-	}
+@ExtensionImpl
+public class DotNetCoreBundleType extends DotNetSdkType {
+  @Nonnull
+  public static String getExecutable() {
+    if (Platform.current().os().isWindows()) {
+      return "dotnet.exe";
+    }
+    return "dotnet";
+  }
 
-	@Nonnull
-	public static File getExecutablePath(@Nonnull String sdkHome)
-	{
-		return new File(new File(sdkHome, "./../../"), getExecutable());
-	}
+  @Nonnull
+  public static File getExecutablePath(@Nonnull String sdkHome) {
+    return new File(new File(sdkHome, "./../../"), getExecutable());
+  }
 
-	@Nonnull
-	public static DotNetCoreBundleType getInstance()
-	{
-		return EP_NAME.findExtensionOrFail(DotNetCoreBundleType.class);
-	}
+  @Nonnull
+  public static DotNetCoreBundleType getInstance() {
+    return EP_NAME.findExtensionOrFail(DotNetCoreBundleType.class);
+  }
 
-	public DotNetCoreBundleType()
-	{
-		super("DOTNET_CORE_SDK");
-	}
+  public DotNetCoreBundleType() {
+    super("DOTNET_CORE_SDK");
+  }
 
-	@Override
-	public boolean isValidSdkHome(String path)
-	{
-		return getExecutablePath(path).exists() && getVersionString(path) != null;
-	}
+  @Override
+  public boolean isValidSdkHome(String path) {
+    return getExecutablePath(path).exists() && getVersionString(path) != null;
+  }
 
-	@Nullable
-	@Override
-	public String getVersionString(String sdkHome)
-	{
-		File versionFile = new File(sdkHome, ".version");
-		if(versionFile.exists())
-		{
-			try
-			{
-				List<String> lines = FileUtil.loadLines(versionFile);
-				if(lines.size() == 3)
-				{
-					return lines.get(1);
-				}
-			}
-			catch(IOException ignored)
-			{
-			}
-		}
-		return null;
-	}
+  @Nullable
+  @Override
+  public String getVersionString(String sdkHome) {
+    File versionFile = new File(sdkHome, ".version");
+    if (versionFile.exists()) {
+      try {
+        List<String> lines = FileUtil.loadLines(versionFile);
+        if (lines.size() == 3) {
+          return lines.get(1);
+        }
+      }
+      catch (IOException ignored) {
+      }
+    }
+    return null;
+  }
 
-	@Override
-	public boolean isRootTypeApplicable(OrderRootType type)
-	{
-		return type == ExternalAttributesRootOrderType.getInstance();
-	}
+  @Override
+  public boolean isRootTypeApplicable(OrderRootType type) {
+    return type == ExternalAttributesRootOrderType.getInstance();
+  }
 
-	@Override
-	public String suggestSdkName(String currentSdkName, String sdkHome)
-	{
-		return ".NET " + getVersionString(sdkHome);
-	}
+  @Override
+  public String suggestSdkName(String currentSdkName, String sdkHome) {
+    return ".NET " + getVersionString(sdkHome);
+  }
 
-	@Nonnull
-	@Override
-	public Collection<String> suggestHomePaths()
-	{
-		List<String> result = new ArrayList<>();
-		Platform platform = Platform.current();
-		Platform.OperatingSystem os = platform.os();
-		if(os.isWindows())
-		{
-			collectFromProgramFiles(platform, result, "ProgramFiles");
-			collectFromProgramFiles(platform, result, "ProgramFiles(x86)");
-		}
-		else if(os.isMac())
-		{
-			collectSdkPaths(new File("/usr/local/share/dotnet/sdk"), result);
-		}
-		return result;
-	}
+  @Nonnull
+  @Override
+  public Collection<String> suggestHomePaths() {
+    List<String> result = new ArrayList<>();
+    Platform platform = Platform.current();
+    Platform.OperatingSystem os = platform.os();
+    if (os.isWindows()) {
+      collectFromProgramFiles(platform, result, "ProgramFiles");
+      collectFromProgramFiles(platform, result, "ProgramFiles(x86)");
+    }
+    else if (os.isMac()) {
+      collectSdkPaths(new File("/usr/local/share/dotnet/sdk"), result);
+    }
+    return result;
+  }
 
-	private void collectFromProgramFiles(Platform platform, List<String> paths, String env)
-	{
-		String path = platform.os().getEnvironmentVariable(env);
-		if(path != null)
-		{
-			collectSdkPaths(new File(path, "/dotnet/sdk"), paths);
-		}
-	}
+  private void collectFromProgramFiles(Platform platform, List<String> paths, String env) {
+    String path = platform.os().getEnvironmentVariable(env);
+    if (path != null) {
+      collectSdkPaths(new File(path, "/dotnet/sdk"), paths);
+    }
+  }
 
-	private void collectSdkPaths(File dotnetSdk, List<String> paths)
-	{
-		if(dotnetSdk.exists())
-		{
-			File[] list = dotnetSdk.listFiles();
-			if(list != null)
-			{
-				for(File file : list)
-				{
-					paths.add(file.getPath());
-				}
-			}
-		}
-	}
+  private void collectSdkPaths(File dotnetSdk, List<String> paths) {
+    if (dotnetSdk.exists()) {
+      File[] list = dotnetSdk.listFiles();
+      if (list != null) {
+        for (File file : list) {
+          paths.add(file.getPath());
+        }
+      }
+    }
+  }
 
-	@Override
-	public boolean canCreatePredefinedSdks()
-	{
-		return true;
-	}
+  @Override
+  public boolean canCreatePredefinedSdks() {
+    return true;
+  }
 
-	@Nonnull
-	@Override
-	public String getPresentableName()
-	{
-		return ".NET (.NET Core)";
-	}
+  @Nonnull
+  @Override
+  public String getPresentableName() {
+    return ".NET (.NET Core)";
+  }
 
-	@Nullable
-	@Override
-	public Image getIcon()
-	{
-		return DotNetIconGroup.netFoundation();
-	}
+  @Nonnull
+  @Override
+  public Image getIcon() {
+    return DotNetIconGroup.netfoundation();
+  }
 
-	@Nonnull
-	@Override
-	public File getLoaderFile(@Nonnull Sdk sdk)
-	{
-		throw new UnsupportedOperationException();
-	}
+  @Nonnull
+  @Override
+  public File getLoaderFile(@Nonnull Sdk sdk) {
+    throw new UnsupportedOperationException();
+  }
 }

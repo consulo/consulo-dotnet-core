@@ -76,6 +76,13 @@ public class DotNetCoreBundleType extends DotNetSdkType {
         List<String> lines = FileUtil.loadLines(versionFile);
         if (lines.size() == 3) {
           return lines.get(1);
+        } else if(lines.size() == 4) {
+          // new lines after net7
+          //4bbdd14480a177e60fba52abf34829020449e46e
+          //7.0.102
+          //win-x64
+          //7.0.102-servicing.22607.3
+          return lines.get(1);
         }
       }
       catch (IOException ignored) {

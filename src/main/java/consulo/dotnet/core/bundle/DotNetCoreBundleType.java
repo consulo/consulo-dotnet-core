@@ -76,12 +76,19 @@ public class DotNetCoreBundleType extends DotNetSdkType {
         List<String> lines = FileUtil.loadLines(versionFile);
         if (lines.size() == 3) {
           return lines.get(1);
-        } else if(lines.size() == 4) {
+        } else if(lines.size() == 4||lines.size() == 5) {
           // new lines after net7
           //4bbdd14480a177e60fba52abf34829020449e46e
           //7.0.102
           //win-x64
           //7.0.102-servicing.22607.3
+          
+          //From Creeper Lv:
+          //On my installation, KUbuntu 22.10, installed .Net 6 and 7 from Microsoft Package
+          //repository, the line count of both dotnet version are 5 instead of 4. It just an
+          //empty line, remvoing last line will solve the problem. However, I personally, 
+          //would like to not modify dotnet sdk.
+          
           return lines.get(1);
         }
       }

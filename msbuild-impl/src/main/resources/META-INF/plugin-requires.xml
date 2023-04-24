@@ -1,0 +1,6 @@
+<consulo-plugin-requires>
+	<plugins>
+		<plugin>consulo.dotnet.core</plugin>
+		<plugin>consulo.csharp</plugin>
+	</plugins>
+</consulo-plugin-requires>

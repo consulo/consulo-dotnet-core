@@ -25,9 +25,9 @@
 	</parent>
 
 	<groupId>consulo.plugin</groupId>
-	<artifactId>consulo.dotnet.core</artifactId>
+	<artifactId>consulo.dotnet.core.api</artifactId>
 	<version>3-SNAPSHOT</version>
-	<packaging>consulo-plugin</packaging>
+	<packaging>jar</packaging>
 
 	<repositories>
 		<repository>
@@ -40,49 +40,7 @@
 		</repository>
 	</repositories>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>consulo.maven</groupId>
-				<artifactId>maven-consulo-plugin</artifactId>
-				<extensions>true</extensions>
-				<configuration>
-					<dependencies>
-						<dependency>consulo.dotnet</dependency>
-						<dependency>com.intellij.xml</dependency>
-						<dependency>consulo.csharp</dependency>
-						<dependency>consulo.msbuild</dependency>
-					</dependencies>
-					<packaging>
-						<skip>${dev.mode}</skip>
-						<version>${build.number}</version>
-					</packaging>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>workspace</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
 	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>consulo.dotnet.core.api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>consulo.dotnet.core.msbuild.impl</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>consulo.dotnet</artifactId>

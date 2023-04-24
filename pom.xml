@@ -41,6 +41,7 @@
   </repositories>
 
   <modules>
+    <module>api</module>
     <module>msbuild-impl</module>
     <module>plugin</module>
   </modules>

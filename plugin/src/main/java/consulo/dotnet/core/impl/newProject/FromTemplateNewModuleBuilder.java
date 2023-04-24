@@ -16,20 +16,23 @@ import javax.annotation.Nonnull;
  * @since 27/01/2023
  */
 @ExtensionImpl(id = "dotnet-core")
-public class FromTemplateNewModuleBuilder implements NewModuleBuilder {
-  private final SdkTable mySdkTable;
+public class FromTemplateNewModuleBuilder implements NewModuleBuilder
+{
+	private final SdkTable mySdkTable;
 
-  @Inject
-  public FromTemplateNewModuleBuilder(SdkTable sdkTable) {
-    mySdkTable = sdkTable;
-  }
+	@Inject
+	public FromTemplateNewModuleBuilder(SdkTable sdkTable)
+	{
+		mySdkTable = sdkTable;
+	}
 
-  @Override
-  public void setupContext(@Nonnull NewModuleContext newModuleContext) {
-    NewModuleContextGroup group = newModuleContext.addGroup("dotnet-core", LocalizeValue.localizeTODO(".NET"));
+	@Override
+	public void setupContext(@Nonnull NewModuleContext newModuleContext)
+	{
+		NewModuleContextGroup group = newModuleContext.addGroup("dotnet-core", LocalizeValue.localizeTODO(".NET"));
 
-    group.add(LocalizeValue.localizeTODO("From Template"),
-              PlatformIconGroup.actionsGroupby(),
-              0, new FromTemplateNewModuleBuilderProcessor(mySdkTable));
-  }
+		group.add(LocalizeValue.localizeTODO("From Template"),
+				PlatformIconGroup.actionsGroupby(),
+				0, new FromTemplateNewModuleBuilderProcessor(mySdkTable));
+	}
 }

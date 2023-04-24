@@ -8,4 +8,7 @@ module consulo.dotnet.core {
   requires consulo.dotnet.impl;
   requires consulo.dotnet.core.api;
   requires consulo.dotnet.core.msbuild.impl;
+
+  requires consulo.msbuild.api;
+  requires consulo.msbuild.daemon.impl;
 }

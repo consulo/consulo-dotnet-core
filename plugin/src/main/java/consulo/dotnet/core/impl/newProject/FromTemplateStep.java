@@ -30,177 +30,208 @@ import java.util.*;
  * @author VISTALL
  * @since 27/01/2023
  */
-public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplateNewModuleWizardContext> {
-  private final SdkTable mySdkTable;
+public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplateNewModuleWizardContext>
+{
+	private final SdkTable mySdkTable;
 
-  private BundleBox myBundleBox;
+	private BundleBox myBundleBox;
 
-  private String mySelectedSdk;
+	private String mySelectedSdk;
 
-  private NewProjectItem mySelectedItem;
-  private String mySelectedLanguage;
+	private NewProjectItem mySelectedItem;
+	private String mySelectedLanguage;
 
-  public FromTemplateStep(FromTemplateNewModuleWizardContext context, SdkTable sdkTable) {
-    super(context);
-    mySdkTable = sdkTable;
-  }
+	public FromTemplateStep(FromTemplateNewModuleWizardContext context, SdkTable sdkTable)
+	{
+		super(context);
+		mySdkTable = sdkTable;
+	}
 
-  @RequiredUIAccess
-  @Override
-  protected void extend(@Nonnull FormBuilder builder, Disposable uiDisposable) {
-    BundleBoxBuilder boxBuilder = BundleBoxBuilder.create(uiDisposable);
-    boxBuilder.withSdkTypeFilterByType(DotNetCoreBundleType.getInstance());
-    myBundleBox = boxBuilder.build();
-    if (mySelectedSdk != null) {
-      myBundleBox.setSelectedBundle(mySelectedSdk);
-    }
+	@RequiredUIAccess
+	@Override
+	protected void extend(@Nonnull FormBuilder builder, Disposable uiDisposable)
+	{
+		BundleBoxBuilder boxBuilder = BundleBoxBuilder.create(uiDisposable);
+		boxBuilder.withSdkTypeFilterByType(DotNetCoreBundleType.getInstance());
+		myBundleBox = boxBuilder.build();
+		if(mySelectedSdk != null)
+		{
+			myBundleBox.setSelectedBundle(mySelectedSdk);
+		}
 
-    ComboBox<BundleBox.BundleBoxItem> component = myBundleBox.getComponent();
-    builder.addLabeled("SDK:", component);
+		ComboBox<BundleBox.BundleBoxItem> component = myBundleBox.getComponent();
+		builder.addLabeled("SDK:", component);
 
-    LoadingLayout<DockLayout> loadingLayout = LoadingLayout.create(DockLayout.create(), uiDisposable);
-    builder.setBottom(loadingLayout);
+		LoadingLayout<DockLayout> loadingLayout = LoadingLayout.create(DockLayout.create(), uiDisposable);
+		builder.setBottom(loadingLayout);
 
-    ShowNotifier.once(myBundleBox.getComponent(), () -> {
-      BundleBox.BundleBoxItem value = component.getValue();
+		ShowNotifier.once(myBundleBox.getComponent(), () -> {
+			BundleBox.BundleBoxItem value = component.getValue();
 
-      startLoad(value == null ? null : value.getBundle(), loadingLayout);
-    });
+			startLoad(value == null ? null : value.getBundle(), loadingLayout);
+		});
 
-    component.addValueListener(valueEvent -> startLoad(valueEvent.getValue().getBundle(), loadingLayout));
-  }
+		component.addValueListener(valueEvent -> startLoad(valueEvent.getValue().getBundle(), loadingLayout));
+	}
 
-  @Override
-  public void validateStep(@Nonnull FromTemplateNewModuleWizardContext context) throws WizardStepValidationException {
-    if (mySelectedItem == null) {
-      throw new WizardStepValidationException("Must item selected");
-    }
-  }
+	@Override
+	public void validateStep(@Nonnull FromTemplateNewModuleWizardContext context) throws WizardStepValidationException
+	{
+		if(mySelectedItem == null)
+		{
+			throw new WizardStepValidationException("Must item selected");
+		}
+	}
 
-  @RequiredUIAccess
-  private void startLoad(Sdk bundle, LoadingLayout<DockLayout> layout) {
-    if (bundle == null) {
-      return;
-    }
+	@RequiredUIAccess
+	private void startLoad(Sdk bundle, LoadingLayout<DockLayout> layout)
+	{
+		if(bundle == null)
+		{
+			return;
+		}
 
-    mySelectedItem = null;
+		mySelectedItem = null;
 
-    layout.startLoading(() -> {
-      return load(bundle);
-    }, (dockLayout, newProjectItems) -> {
-      ListBox<NewProjectItem> itemListBox = ListBox.create(newProjectItems);
+		layout.startLoading(() -> {
+			return load(bundle);
+		}, (dockLayout, newProjectItems) -> {
+			ListBox<NewProjectItem> itemListBox = ListBox.create(newProjectItems);
 
-      HorizontalLayout languageGroupLayout = HorizontalLayout.create();
+			HorizontalLayout languageGroupLayout = HorizontalLayout.create();
 
-      itemListBox.addValueListener(valueEvent -> {
-        mySelectedItem = valueEvent.getValue();
+			itemListBox.addValueListener(valueEvent -> {
+				mySelectedItem = valueEvent.getValue();
 
-        languageGroupLayout.removeAll();
-        languageGroupLayout.setVisible(false);
+				languageGroupLayout.removeAll();
+				languageGroupLayout.setVisible(false);
 
-        if (mySelectedItem != null && !mySelectedItem.languages().isEmpty()) {
-          ValueGroup<Boolean> group = ValueGroups.boolGroup();
+				if(mySelectedItem != null && !mySelectedItem.languages().isEmpty())
+				{
+					ValueGroup<Boolean> group = ValueGroups.boolGroup();
 
-          languageGroupLayout.add(Label.create(LocalizeValue.localizeTODO("Languages")));
+					languageGroupLayout.add(Label.create(LocalizeValue.localizeTODO("Languages")));
 
-          for (String language : mySelectedItem.languages()) {
-            RadioButton button = RadioButton.create(LocalizeValue.of(language));
-            button.addValueListener(e -> mySelectedLanguage = language);
-            languageGroupLayout.add(button);
-            group.add(button);
+					for(String language : mySelectedItem.languages())
+					{
+						RadioButton button = RadioButton.create(LocalizeValue.of(language));
+						button.addValueListener(e -> mySelectedLanguage = language);
+						languageGroupLayout.add(button);
+						group.add(button);
 
-            if (Objects.equals(language, mySelectedItem.defaultLanguage())) {
-              button.setValue(Boolean.TRUE);
-            }
-          }
+						if(Objects.equals(language, mySelectedItem.defaultLanguage()))
+						{
+							button.setValue(Boolean.TRUE);
+						}
+					}
 
-          languageGroupLayout.setVisible(true);
-        }
-      });
-      
-      itemListBox.setRender((render, i, item) -> {
-        render.append(item == null ? "" : item.name());
-      });
+					languageGroupLayout.setVisible(true);
+				}
+			});
 
-      ScrollableLayout scrollableLayout = ScrollableLayout.create(itemListBox);
-      scrollableLayout.addBorders(BorderStyle.LINE, ComponentColors.BORDER, 1);
+			itemListBox.setRender((render, i, item) -> {
+				render.append(item == null ? "" : item.name());
+			});
 
-      dockLayout.center(scrollableLayout);
-      dockLayout.bottom(languageGroupLayout);
-    });
-  }
+			ScrollableLayout scrollableLayout = ScrollableLayout.create(itemListBox);
+			scrollableLayout.addBorders(BorderStyle.LINE, ComponentColors.BORDER, 1);
 
-  private List<NewProjectItem> load(Sdk bundle) {
-    if (bundle == null) {
-      return List.of();
-    }
+			dockLayout.center(scrollableLayout);
+			dockLayout.bottom(languageGroupLayout);
+		});
+	}
 
-    GeneralCommandLine line = new GeneralCommandLine();
-    line.setExePath(DotNetCoreBundleType.getExecutablePath(bundle.getHomePath()).getAbsolutePath());
-    line.addParameters("new", "list");
-    try {
-      ProcessOutput processOutput = ExecUtil.execAndGetOutput(line, 5000);
+	private List<NewProjectItem> load(Sdk bundle)
+	{
+		if(bundle == null)
+		{
+			return List.of();
+		}
 
-      NewParser newParser = NewParser.parse(processOutput.getStdout());
+		GeneralCommandLine line = new GeneralCommandLine();
+		line.setExePath(DotNetCoreBundleType.getExecutablePath(bundle.getHomePath()).getAbsolutePath());
+		line.addParameters("new", "list");
+		try
+		{
+			ProcessOutput processOutput = ExecUtil.execAndGetOutput(line, 5000);
 
-      List<NewProjectItem> items = new ArrayList<>();
-      for (List<String> data : newParser.getData()) {
-        String name = data.get(0);
-        String shortName = data.get(1);
+			NewParser newParser = NewParser.parse(processOutput.getStdout());
 
-        Set<String> languages;
-        String defaultLanguage = null;
-        String languagesStr = data.get(2);
-        if (languagesStr.isBlank()) {
-          languages = Set.of();
-        }
-        else {
-          languages = new LinkedHashSet<>();
-          String[] values = languagesStr.split(",");
-          for (String s : values) {
-            if (s.isBlank()) {
-              continue;
-            }
+			List<NewProjectItem> items = new ArrayList<>();
+			for(List<String> data : newParser.getData())
+			{
+				String name = data.get(0);
+				String shortName = data.get(1);
 
-            if (s.indexOf('[') != -1) {
-              // [C#] -> C#
-              defaultLanguage = s.substring(1, s.length() - 1);
-              languages.add(defaultLanguage);
-            }
-            else {
-              languages.add(s);
-            }
-          }
-        }
+				Set<String> languages;
+				String defaultLanguage = null;
+				String languagesStr = data.get(2);
+				if(languagesStr.isBlank())
+				{
+					languages = Set.of();
+				}
+				else
+				{
+					languages = new LinkedHashSet<>();
+					String[] values = languagesStr.split(",");
+					for(String s : values)
+					{
+						if(s.isBlank())
+						{
+							continue;
+						}
 
-        items.add(new NewProjectItem(name, shortName, languages, defaultLanguage));
-      }
+						if(s.indexOf('[') != -1)
+						{
+							// [C#] -> C#
+							defaultLanguage = s.substring(1, s.length() - 1);
+							languages.add(defaultLanguage);
+						}
+						else
+						{
+							languages.add(s);
+						}
+					}
+				}
 
-      return items;
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-    }
+				if(languages.isEmpty())
+				{
+					continue;
+				}
 
-    return List.of();
-  }
+				items.add(new NewProjectItem(name, shortName, languages, defaultLanguage));
+			}
 
-  @Override
-  @RequiredUIAccess
-  public void onStepEnter(@Nonnull FromTemplateNewModuleWizardContext context) {
-    Sdk sdk = mySdkTable.findMostRecentSdkOfType(DotNetCoreBundleType.getInstance());
-    if (sdk != null && myBundleBox == null) {
-      mySelectedSdk = sdk.getName();
-    }
-  }
+			return items;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 
-  @Override
-  public void onStepLeave(@Nonnull FromTemplateNewModuleWizardContext context) {
-    if (myBundleBox != null) {
-      context.setSelectedSdk(mySdkTable.findSdk(myBundleBox.getSelectedBundleName()));
-    }
+		return List.of();
+	}
 
-    context.setNewProjectItem(mySelectedItem);
-    context.setSelectedLanguage(mySelectedLanguage);
-  }
+	@Override
+	@RequiredUIAccess
+	public void onStepEnter(@Nonnull FromTemplateNewModuleWizardContext context)
+	{
+		Sdk sdk = mySdkTable.findMostRecentSdkOfType(DotNetCoreBundleType.getInstance());
+		if(sdk != null && myBundleBox == null)
+		{
+			mySelectedSdk = sdk.getName();
+		}
+	}
+
+	@Override
+	public void onStepLeave(@Nonnull FromTemplateNewModuleWizardContext context)
+	{
+		if(myBundleBox != null)
+		{
+			context.setSelectedSdk(mySdkTable.findSdk(myBundleBox.getSelectedBundleName()));
+		}
+
+		context.setNewProjectItem(mySelectedItem);
+		context.setSelectedLanguage(mySelectedLanguage);
+	}
 }

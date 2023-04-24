@@ -17,8 +17,10 @@
 package consulo.dotnet.core.bundle;
 
 import consulo.annotation.component.ExtensionImpl;
+import consulo.component.extension.ExtensionInstance;
 import consulo.content.OrderRootType;
 import consulo.content.bundle.Sdk;
+import consulo.content.bundle.SdkType;
 import consulo.dotnet.externalAttributes.ExternalAttributesRootOrderType;
 import consulo.dotnet.icon.DotNetIconGroup;
 import consulo.dotnet.sdk.DotNetSdkType;
@@ -33,6 +35,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * @author VISTALL
@@ -40,6 +43,13 @@ import java.util.List;
  */
 @ExtensionImpl
 public class DotNetCoreBundleType extends DotNetSdkType {
+  private static final Supplier<DotNetCoreBundleType> INSTANCE = ExtensionInstance.from(SdkType.class);
+
+  @Nonnull
+  public static DotNetCoreBundleType getInstance() {
+    return INSTANCE.get();
+  }
+
   @Nonnull
   public static String getExecutable() {
     if (Platform.current().os().isWindows()) {
@@ -51,11 +61,6 @@ public class DotNetCoreBundleType extends DotNetSdkType {
   @Nonnull
   public static File getExecutablePath(@Nonnull String sdkHome) {
     return new File(new File(sdkHome, "./../../"), getExecutable());
-  }
-
-  @Nonnull
-  public static DotNetCoreBundleType getInstance() {
-    return EP_NAME.findExtensionOrFail(DotNetCoreBundleType.class);
   }
 
   public DotNetCoreBundleType() {

@@ -15,18 +15,18 @@
   -->
 
 <consulo-plugin url="https://github.com/consulo/incubating-consulo-dotnet-core">
-	<id>consulo.dotnet.core</id>
-	<name>.NET (previously named .NET Core)</name>
-	<category>Software Framework</category>
-	<version>SNAPSHOT</version>
-	<vendor>consulo.io</vendor>
-	<depends>consulo.dotnet</depends>
+  <id>consulo.dotnet.core</id>
+  <name>.NET (previously named .NET Core)</name>
+  <category>Software Framework</category>
+  <version>SNAPSHOT</version>
+  <vendor>consulo.io</vendor>
+  <depends>consulo.dotnet</depends>
 
-	<tags>
-		<tag>software.framework</tag>
-	</tags>
+  <tags>
+    <tag>software.framework</tag>
+  </tags>
 
-	<permissions>
-		<permission type="GET_ENV"/>
-	</permissions>
+  <permissions>
+    <permission type="GET_ENV"/>
+  </permissions>
 </consulo-plugin>

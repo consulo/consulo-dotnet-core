@@ -89,11 +89,7 @@ public class DotNetCoreBundleType extends DotNetSdkType
 			try
 			{
 				List<String> lines = FileUtil.loadLines(versionFile);
-				if(lines.size() == 3)
-				{
-					return lines.get(1);
-				}
-				else if(lines.size() == 4)
+				if(lines.size() >= 3)
 				{
 					// new lines after net7
 					//4bbdd14480a177e60fba52abf34829020449e46e

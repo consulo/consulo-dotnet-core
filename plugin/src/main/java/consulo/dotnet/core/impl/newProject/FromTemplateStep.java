@@ -9,8 +9,8 @@ import consulo.localize.LocalizeValue;
 import consulo.module.ui.BundleBox;
 import consulo.module.ui.BundleBoxBuilder;
 import consulo.process.cmd.GeneralCommandLine;
-import consulo.process.local.ExecUtil;
-import consulo.process.local.ProcessOutput;
+import consulo.process.util.CapturingProcessUtil;
+import consulo.process.util.ProcessOutput;
 import consulo.ui.*;
 import consulo.ui.annotation.RequiredUIAccess;
 import consulo.ui.border.BorderStyle;
@@ -153,7 +153,7 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
 		line.addParameters("new", "list");
 		try
 		{
-			ProcessOutput processOutput = ExecUtil.execAndGetOutput(line, 5000);
+			ProcessOutput processOutput = CapturingProcessUtil.execAndGetOutput(line, 5000);
 
 			NewParser newParser = NewParser.parse(processOutput.getStdout());
 

@@ -25,6 +25,7 @@ import consulo.dotnet.externalAttributes.ExternalAttributesRootOrderType;
 import consulo.dotnet.icon.DotNetIconGroup;
 import consulo.dotnet.sdk.DotNetSdkType;
 import consulo.platform.Platform;
+import consulo.platform.PlatformOperatingSystem;
 import consulo.ui.image.Image;
 import consulo.util.io.FileUtil;
 
@@ -124,7 +125,7 @@ public class DotNetCoreBundleType extends DotNetSdkType
 	{
 		List<String> result = new ArrayList<>();
 		Platform platform = Platform.current();
-		Platform.OperatingSystem os = platform.os();
+		PlatformOperatingSystem os = platform.os();
 		if(os.isWindows())
 		{
 			collectFromProgramFiles(platform, result, "ProgramFiles");

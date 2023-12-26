@@ -135,6 +135,10 @@ public class DotNetCoreBundleType extends DotNetSdkType
 		{
 			collectSdkPaths(new File("/usr/local/share/dotnet/sdk"), result);
 		}
+		else if(os.isLinux())
+		{
+			collectSdkPaths(new File("/usr/share/dotnet/sdk/"), result);
+		}
 		return result;
 	}
 

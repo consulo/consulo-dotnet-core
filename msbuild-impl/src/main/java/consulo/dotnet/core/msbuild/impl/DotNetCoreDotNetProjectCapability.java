@@ -8,7 +8,7 @@ import consulo.msbuild.MSBuildProcessProvider;
 import consulo.dotnet.core.msbuild.impl.extension.MSBuildDotNetCoreMutableModuleExtension;
 import consulo.msbuild.dotnet.impl.BaseDotNetProjectCapability;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import java.util.Map;
 
 /**

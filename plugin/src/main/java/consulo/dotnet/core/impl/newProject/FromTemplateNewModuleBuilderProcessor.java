@@ -2,33 +2,17 @@ package consulo.dotnet.core.impl.newProject;
 
 import consulo.annotation.access.RequiredReadAction;
 import consulo.application.Application;
-import consulo.application.progress.Task;
 import consulo.content.bundle.Sdk;
 import consulo.content.bundle.SdkTable;
-import consulo.dotnet.core.bundle.DotNetCoreBundleType;
 import consulo.ide.newModule.NewModuleBuilderProcessor;
-import consulo.language.editor.PlatformDataKeys;
 import consulo.module.content.layer.ContentEntry;
 import consulo.module.content.layer.ModifiableRootModel;
 import consulo.msbuild.daemon.impl.MSBuildDaemonService;
 import consulo.msbuild.module.extension.MSBuildSolutionMutableModuleExtension;
-import consulo.process.ExecutionException;
-import consulo.process.ProcessHandler;
-import consulo.process.ProcessHandlerBuilder;
-import consulo.process.cmd.GeneralCommandLine;
-import consulo.process.event.ProcessEvent;
-import consulo.process.event.ProcessListener;
 import consulo.project.Project;
-import consulo.project.ui.view.ProjectView;
-import consulo.project.ui.view.ProjectViewPane;
-import consulo.ui.ex.TreeExpander;
 import consulo.ui.ex.wizard.WizardStep;
-import consulo.util.dataholder.Key;
-import consulo.util.io.FileUtil;
-import consulo.virtualFileSystem.LocalFileSystem;
+import jakarta.annotation.Nonnull;
 
-import javax.annotation.Nonnull;
-import java.util.List;
 import java.util.function.Consumer;
 
 /**

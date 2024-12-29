@@ -13,8 +13,8 @@ import consulo.msbuild.dotnet.impl.module.extension.MSBuildBaseDotNetModuleExten
 import consulo.process.ExecutionException;
 import consulo.process.cmd.GeneralCommandLine;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.io.IOException;
 
 /**

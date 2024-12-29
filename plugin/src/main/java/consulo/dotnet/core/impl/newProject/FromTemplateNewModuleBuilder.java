@@ -2,11 +2,11 @@ package consulo.dotnet.core.impl.newProject;
 
 import consulo.annotation.component.ExtensionImpl;
 import consulo.content.bundle.SdkTable;
+import consulo.dotnet.icon.DotNetIconGroup;
 import consulo.ide.newModule.NewModuleBuilder;
 import consulo.ide.newModule.NewModuleContext;
 import consulo.ide.newModule.NewModuleContextGroup;
 import consulo.localize.LocalizeValue;
-import consulo.platform.base.icon.PlatformIconGroup;
 import jakarta.inject.Inject;
 
 import javax.annotation.Nonnull;
@@ -32,7 +32,7 @@ public class FromTemplateNewModuleBuilder implements NewModuleBuilder
 		NewModuleContextGroup group = newModuleContext.addGroup("dotnet-core", LocalizeValue.localizeTODO(".NET"));
 
 		group.add(LocalizeValue.localizeTODO("From Template"),
-				PlatformIconGroup.actionsGroupby(),
+				DotNetIconGroup.netfoundation(),
 				0, new FromTemplateNewModuleBuilderProcessor(mySdkTable));
 	}
 }

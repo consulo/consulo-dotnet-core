@@ -23,7 +23,7 @@ import consulo.ui.style.ComponentColors;
 import consulo.ui.util.FormBuilder;
 import consulo.ui.util.ShowNotifier;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import java.util.*;
 
 /**

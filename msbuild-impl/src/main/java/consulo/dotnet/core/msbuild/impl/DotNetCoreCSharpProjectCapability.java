@@ -4,7 +4,7 @@ import consulo.annotation.component.ExtensionImpl;
 import consulo.msbuild.MSBuildProcessProvider;
 import consulo.msbuild.csharp.BaseCSharpProjectCapability;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 /**
  * @author VISTALL

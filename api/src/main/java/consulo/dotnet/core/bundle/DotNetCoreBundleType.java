@@ -29,8 +29,8 @@ import consulo.platform.PlatformOperatingSystem;
 import consulo.ui.image.Image;
 import consulo.util.io.FileUtil;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;

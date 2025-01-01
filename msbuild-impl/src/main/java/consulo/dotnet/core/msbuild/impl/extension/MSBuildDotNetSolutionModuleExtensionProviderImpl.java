@@ -11,7 +11,7 @@ import consulo.msbuild.module.extension.MSBuildSolutionModuleExtensionImpl;
 import consulo.msbuild.module.extension.MSBuildSolutionMutableModuleExtensionImpl;
 import consulo.ui.image.Image;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 /**
  * @author VISTALL

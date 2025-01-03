@@ -45,7 +45,7 @@ public class DotNetCoreStackFrameProxy implements DotNetStackFrameProxy {
     @Nonnull
     @Override
     public DotNetValueProxy getThisObject() throws DotNetInvalidObjectException, DotNetInvalidStackFrameException, DotNetAbsentInformationException {
-        return null;
+        return new DotNetValueProxyImpl();
     }
 
     @Nullable

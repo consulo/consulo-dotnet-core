@@ -3,8 +3,6 @@ package consulo.dotnet.core.msbuild.impl.debug;
 import consulo.application.ApplicationManager;
 import consulo.dotnet.debugger.DotNetDebugContext;
 import consulo.dotnet.debugger.impl.DotNetDebugProcess;
-import consulo.dotnet.debugger.impl.DotNetEditorsProvider;
-import consulo.dotnet.debugger.impl.DotNetSuspendContext;
 import consulo.dotnet.debugger.impl.breakpoint.DotNetLineBreakpointType;
 import consulo.dotnet.debugger.impl.breakpoint.properties.DotNetLineBreakpointProperties;
 import consulo.dotnet.debugger.impl.nodes.logicView.ArrayDotNetLogicValueView;
@@ -20,7 +18,9 @@ import consulo.execution.debug.XDebugSession;
 import consulo.execution.debug.XDebuggerManager;
 import consulo.execution.debug.breakpoint.XBreakpoint;
 import consulo.execution.debug.breakpoint.XLineBreakpoint;
+import consulo.execution.debug.breakpoint.XLineBreakpointType;
 import consulo.execution.debug.evaluation.XDebuggerEditorsProvider;
+import consulo.execution.debugger.dap.DAPDebugProcess;
 import consulo.execution.debugger.dap.protocol.DAP;
 import consulo.execution.debugger.dap.protocol.DAPFactory;
 import consulo.execution.ui.ExecutionConsole;
@@ -69,16 +69,16 @@ public class DotNetCoreDebugProcess extends DAPDebugProcess implements DotNetDeb
         myVirtualMachine = new DotNetCoreVirtualMachineProxy(this);
     }
 
-    @Override
-    protected void doPause(@Nullable XBreakpoint<?> breakpoint, int threadId) {
-        DotNetDebugContext context = createDebugContext(myVirtualMachine, null);
-        if (breakpoint != null) {
-            getSession().breakpointReached(breakpoint, null, new DotNetSuspendContext(context, threadId));
-        }
-        else {
-            getSession().positionReached(new DotNetSuspendContext(context, threadId));
-        }
-    }
+//    @Override
+//    protected void doPause(@Nullable XBreakpoint<?> breakpoint, int threadId) {
+//        DotNetDebugContext context = createDebugContext(myVirtualMachine, null);
+//        if (breakpoint != null) {
+//            getSession().breakpointReached(breakpoint, null, new DotNetSuspendContext(context, threadId));
+//        }
+//        else {
+//            getSession().positionReached(new DotNetSuspendContext(context, threadId));
+//        }
+//    }
 
     @Nonnull
     protected DotNetLogicValueView[] createLogicValueViews() {
@@ -103,7 +103,7 @@ public class DotNetCoreDebugProcess extends DAPDebugProcess implements DotNetDeb
     @Nonnull
     @Override
     public XDebuggerEditorsProvider getEditorsProvider() {
-        return new DotNetEditorsProvider(getSession());
+        return new DotNetEditorsProvider2(getSession(), myRunProfile);
     }
 
     @Nonnull
@@ -131,6 +131,12 @@ public class DotNetCoreDebugProcess extends DAPDebugProcess implements DotNetDeb
             return TextConsoleBuilderFactory.getInstance().createBuilder(getSession().getProject()).getConsole();
         }
         return executionConsole;
+    }
+
+    @Nonnull
+    @Override
+    protected XLineBreakpointType<?> getLineBreakpointType() {
+        return DotNetLineBreakpointType.getInstance();
     }
 
     @Nonnull

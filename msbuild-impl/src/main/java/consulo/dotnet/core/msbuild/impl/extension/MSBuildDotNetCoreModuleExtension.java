@@ -16,9 +16,9 @@ import consulo.platform.Platform;
 import consulo.platform.PlatformOperatingSystem;
 import consulo.process.ExecutionException;
 import consulo.process.cmd.GeneralCommandLine;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 

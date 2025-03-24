@@ -25,6 +25,7 @@ import consulo.ui.util.ShowNotifier;
 
 import jakarta.annotation.Nonnull;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author VISTALL
@@ -153,7 +154,7 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
 		line.addParameters("new", "list");
 		try
 		{
-			ProcessOutput processOutput = CapturingProcessUtil.execAndGetOutput(line, 5000);
+			ProcessOutput processOutput = CapturingProcessUtil.execAndGetOutput(line, (int) TimeUnit.MINUTES.toMillis(1));
 
 			NewParser newParser = NewParser.parse(processOutput.getStdout());
 

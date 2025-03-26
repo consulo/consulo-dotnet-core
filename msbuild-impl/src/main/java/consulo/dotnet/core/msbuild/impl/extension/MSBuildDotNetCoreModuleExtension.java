@@ -75,6 +75,10 @@ public class MSBuildDotNetCoreModuleExtension extends MSBuildBaseDotNetModuleExt
                 throw new ExecutionException("Debug not supported. Path not exists: " + fullPath);
             }
 
+            if (!os.isWindows() && !fullPath.canExecute()) {
+                fullPath.setExecutable(true);
+            }
+
             commandLine.setExecutable(fullPath.toPath());
             commandLine.addParameter("--interpreter=vscode");
             commandLine.addParameter("--server=" + debugConnectionInfo.getPort());

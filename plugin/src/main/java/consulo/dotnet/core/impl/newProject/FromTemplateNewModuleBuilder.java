@@ -31,7 +31,7 @@ public class FromTemplateNewModuleBuilder implements NewModuleBuilder
 	{
 		NewModuleContextGroup group = newModuleContext.addGroup("dotnet-core", LocalizeValue.localizeTODO(".NET"));
 
-		group.add(LocalizeValue.localizeTODO("From Template"),
+		group.add(LocalizeValue.localizeTODO("Template"),
 				DotNetIconGroup.netfoundation(),
 				0, new FromTemplateNewModuleBuilderProcessor(mySdkTable));
 	}

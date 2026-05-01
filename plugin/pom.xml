@@ -74,7 +74,7 @@
     <dependencies>
         <dependency>
             <groupId>consulo</groupId>
-            <artifactId>consulo-ide-api</artifactId>
+            <artifactId>consulo-module-creation-api</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>

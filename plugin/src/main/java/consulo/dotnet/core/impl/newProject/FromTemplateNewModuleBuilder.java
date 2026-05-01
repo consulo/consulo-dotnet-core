@@ -3,10 +3,10 @@ package consulo.dotnet.core.impl.newProject;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.content.bundle.SdkTable;
 import consulo.dotnet.icon.DotNetIconGroup;
-import consulo.ide.newModule.NewModuleBuilder;
-import consulo.ide.newModule.NewModuleContext;
-import consulo.ide.newModule.NewModuleContextGroup;
 import consulo.localize.LocalizeValue;
+import consulo.module.creation.scratch.NewModuleBuilder;
+import consulo.module.creation.scratch.NewModuleContext;
+import consulo.module.creation.scratch.NewModuleContextGroup;
 import jakarta.inject.Inject;
 
 import jakarta.annotation.Nonnull;

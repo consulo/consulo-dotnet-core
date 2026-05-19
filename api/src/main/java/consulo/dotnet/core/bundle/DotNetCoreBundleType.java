@@ -96,8 +96,8 @@ public class DotNetCoreBundleType extends DotNetSdkType {
     }
 
     @Override
-    public boolean isRootTypeApplicable(OrderRootType type) {
-        return type == ExternalAttributesRootOrderType.getInstance();
+    public boolean isRootTypeApplicable(String type) {
+        return ExternalAttributesRootOrderType.ID.equals(type);
     }
 
     @Override

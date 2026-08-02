@@ -120,7 +120,7 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
                     }
                 });
 
-                itemListBox.setRenderer((renderer, i, item) -> renderer.append(item == null ? "" : item.name()));
+                itemListBox.setRender((presentation, item) -> presentation.append(item.getValue() == null ? "" : item.getValue().name()));
 
                 ScrollableLayout scrollableLayout = ScrollableLayout.create(itemListBox);
                 scrollableLayout.addBorders(BorderStyle.LINE, ComponentColors.BORDER, 1);

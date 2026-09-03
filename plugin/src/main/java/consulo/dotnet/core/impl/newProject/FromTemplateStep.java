@@ -13,13 +13,11 @@ import consulo.process.util.CapturingProcessUtil;
 import consulo.process.util.ProcessOutput;
 import consulo.ui.*;
 import consulo.ui.annotation.RequiredUIAccess;
-import consulo.ui.border.BorderStyle;
 import consulo.ui.ex.wizard.WizardStepValidationException;
 import consulo.ui.layout.DockLayout;
 import consulo.ui.layout.HorizontalLayout;
 import consulo.ui.layout.LoadingLayout;
 import consulo.ui.layout.ScrollableLayout;
-import consulo.ui.style.ComponentColors;
 import consulo.ui.util.FormBuilder;
 import consulo.ui.util.ShowNotifier;
 
@@ -101,18 +99,18 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
                     languageGroupLayout.setVisible(false);
 
                     if (mySelectedItem != null && !mySelectedItem.languages().isEmpty()) {
-                        ValueGroup<Boolean> group = ValueGroups.boolGroup();
+                        RadioGroup<String> group = RadioGroup.create();
+                        group.addValueListener(language -> mySelectedLanguage = language);
 
                         languageGroupLayout.add(Label.create(LocalizeValue.localizeTODO("Languages")));
 
                         for (String language : mySelectedItem.languages()) {
-                            RadioButton button = RadioButton.create(LocalizeValue.of(language));
-                            button.addValueListener(e -> mySelectedLanguage = language);
+                            RadioButton button = group.newButton(LocalizeValue.of(language), language);
+
                             languageGroupLayout.add(button);
-                            group.add(button);
 
                             if (Objects.equals(language, mySelectedItem.defaultLanguage())) {
-                                button.setValue(Boolean.TRUE);
+                                group.setValue(language);
                             }
                         }
 
@@ -123,7 +121,7 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
                 itemListBox.setRender((presentation, item) -> presentation.append(item.getValue() == null ? "" : item.getValue().name()));
 
                 ScrollableLayout scrollableLayout = ScrollableLayout.create(itemListBox);
-                scrollableLayout.addBorders(BorderStyle.LINE, ComponentColors.BORDER, 1);
+                scrollableLayout.borderBuilder().allSet().apply();
 
                 dockLayout.center(scrollableLayout);
                 dockLayout.bottom(languageGroupLayout);

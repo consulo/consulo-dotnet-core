@@ -24,6 +24,7 @@ import consulo.ui.util.ShowNotifier;
 import jakarta.annotation.Nonnull;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -70,11 +71,13 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
         component.addValueListener(valueEvent -> startLoad(valueEvent.getValue().getBundle(), loadingLayout));
     }
 
+    @RequiredUIAccess
     @Override
-    public void validateStep(@Nonnull FromTemplateNewModuleWizardContext context) throws WizardStepValidationException {
+    public CompletableFuture<?> validateStep(FromTemplateNewModuleWizardContext context) {
         if (mySelectedItem == null) {
-            throw new WizardStepValidationException("Must item selected");
+            return CompletableFuture.failedFuture(new WizardStepValidationException("Item must be selected"));
         }
+        return CompletableFuture.completedFuture(null);
     }
 
     @RequiredUIAccess

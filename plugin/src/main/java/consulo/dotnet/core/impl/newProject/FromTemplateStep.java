@@ -71,8 +71,8 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
         component.addValueListener(valueEvent -> startLoad(valueEvent.getValue().getBundle(), loadingLayout));
     }
 
-    @RequiredUIAccess
     @Override
+    @RequiredUIAccess
     public CompletableFuture<?> validateStep(FromTemplateNewModuleWizardContext context) {
         if (mySelectedItem == null) {
             return CompletableFuture.failedFuture(new WizardStepValidationException("Item must be selected"));
@@ -121,7 +121,7 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
                     }
                 });
 
-                itemListBox.setRender((presentation, item) -> presentation.append(item.getValue() == null ? "" : item.getValue().name()));
+                itemListBox.setRenderer((presentation, item) -> presentation.append(item.getValue() == null ? "" : item.getValue().name()));
 
                 ScrollableLayout scrollableLayout = ScrollableLayout.create(itemListBox);
                 scrollableLayout.borderBuilder().allSet().apply();

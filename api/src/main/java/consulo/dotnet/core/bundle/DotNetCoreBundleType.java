@@ -18,27 +18,30 @@ package consulo.dotnet.core.bundle;
 
 import consulo.annotation.component.ExtensionImpl;
 import consulo.component.extension.ExtensionInstance;
-import consulo.content.OrderRootType;
 import consulo.content.bundle.Sdk;
 import consulo.content.bundle.SdkType;
-import consulo.dotnet.externalAttributes.ExternalAttributesRootOrderType;
 import consulo.dotnet.icon.DotNetIconGroup;
 import consulo.dotnet.sdk.DotNetSdkType;
 import consulo.localize.LocalizeValue;
 import consulo.platform.Platform;
 import consulo.platform.PlatformOperatingSystem;
-import consulo.util.io.FileUtil;
+import consulo.util.lang.StringUtil;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
+ * A home of the bundle is a {@code sdk/<version>} directory of a .NET installation of any machine.
+ *
  * @author VISTALL
  * @since 02-Feb-17
  */
@@ -52,16 +55,21 @@ public class DotNetCoreBundleType extends DotNetSdkType {
     }
 
     @Nonnull
-    public static String getExecutable() {
-        if (Platform.current().os().isWindows()) {
-            return "dotnet.exe";
-        }
-        return "dotnet";
+    public static String getExecutable(@Nonnull Platform platform) {
+        return platform.os().isWindows() ? "dotnet.exe" : "dotnet";
+    }
+
+    /**
+     * The {@code dotnet} of the installation of the bundle home.
+     */
+    @Nonnull
+    public static Path getExecutablePath(@Nonnull Platform platform, @Nonnull Path sdkHome) {
+        return sdkHome.resolve("../..").normalize().resolve(getExecutable(platform));
     }
 
     @Nonnull
-    public static File getExecutablePath(@Nonnull String sdkHome) {
-        return new File(new File(sdkHome, "./../../"), getExecutable());
+    public static Path getExecutablePath(@Nonnull Sdk sdk) {
+        return getExecutablePath(sdk.getPlatform(), sdk.getHomeNioPath());
     }
 
     public DotNetCoreBundleType() {
@@ -69,87 +77,91 @@ public class DotNetCoreBundleType extends DotNetSdkType {
     }
 
     @Override
-    public boolean isValidSdkHome(String path) {
-        return getExecutablePath(path).exists() && getVersionString(path) != null;
+    public boolean isValidSdkHome(@Nonnull Platform platform, @Nonnull Path path) {
+        return Files.isRegularFile(getExecutablePath(platform, path)) && getVersionString(platform, path) != null;
     }
 
     @Nullable
     @Override
-    public String getVersionString(String sdkHome) {
-        File versionFile = new File(sdkHome, ".version");
-        if (versionFile.exists()) {
-            try {
-                List<String> lines = FileUtil.loadLines(versionFile);
-                if (lines.size() >= 3) {
-                    // new lines after net7
-                    //4bbdd14480a177e60fba52abf34829020449e46e
-                    //7.0.102
-                    //win-x64
-                    //7.0.102-servicing.22607.3
-                    return lines.get(1);
-                }
+    public String getVersionString(@Nonnull Platform platform, @Nonnull Path sdkHome) {
+        try {
+            List<String> lines = Files.readAllLines(sdkHome.resolve(".version"));
+            if (lines.size() >= 3) {
+                // new lines after net7
+                //4bbdd14480a177e60fba52abf34829020449e46e
+                //7.0.102
+                //win-x64
+                //7.0.102-servicing.22607.3
+                return lines.get(1).trim();
             }
-            catch (IOException ignored) {
-            }
+        }
+        catch (IOException ignored) {
         }
         return null;
     }
 
     @Override
-    public boolean isRootTypeApplicable(String type) {
-        return ExternalAttributesRootOrderType.ID.equals(type);
+    public String suggestSdkName(@Nonnull Platform platform, @Nullable String currentSdkName, @Nonnull Path sdkHome) {
+        return ".NET " + getVersionString(platform, sdkHome);
     }
 
     @Override
-    public String suggestSdkName(String currentSdkName, String sdkHome) {
-        return ".NET " + getVersionString(sdkHome);
-    }
-
-    @Nonnull
-    @Override
-    public Collection<String> suggestHomePaths() {
-        List<String> result = new ArrayList<>();
-        Platform platform = Platform.current();
+    public void collectHomePaths(@Nonnull Platform platform, @Nonnull Consumer<Path> consumer) {
         PlatformOperatingSystem os = platform.os();
+
+        // the installations - each has its sdk directory
+        Set<Path> roots = new LinkedHashSet<>();
+        addRoot(platform, roots, os.getEnvironmentVariable("DOTNET_ROOT"));
         if (os.isWindows()) {
-            collectFromProgramFiles(platform, result, "ProgramFiles");
-            collectFromProgramFiles(platform, result, "ProgramFiles(x86)");
+            addRoot(platform, roots, os.getEnvironmentVariable("ProgramFiles"), "dotnet");
+            addRoot(platform, roots, os.getEnvironmentVariable("ProgramFiles(x86)"), "dotnet");
         }
         else if (os.isMac()) {
-            collectSdkPaths(new File("/usr/local/share/dotnet/sdk"), result);
+            addRoot(platform, roots, "/usr/local/share/dotnet");
         }
-        else if (os.isLinux()) {
-            collectSdkPaths(new File("/usr/share/dotnet/sdk/"), result);
+        else {
+            addRoot(platform, roots, "/usr/share/dotnet");
+            addRoot(platform, roots, "/usr/lib/dotnet");
         }
-        return result;
-    }
+        addRoot(platform, roots, platform.user().homePath().toString(), ".dotnet");
 
-    private void collectFromProgramFiles(Platform platform, List<String> paths, String env) {
-        String path = platform.os().getEnvironmentVariable(env);
-        if (path != null) {
-            collectSdkPaths(new File(path, "/dotnet/sdk"), paths);
-        }
-    }
-
-    private void collectSdkPaths(File dotnetSdk, List<String> paths) {
-        if (dotnetSdk.exists()) {
-            File[] list = dotnetSdk.listFiles();
-            if (list != null) {
-                for (File file : list) {
-                    paths.add(file.getPath());
+        // the dotnet of the path - a link of a system installation, or an installation of its own
+        String pathVariable = os.getEnvironmentVariable("PATH");
+        if (pathVariable != null) {
+            for (String entry : StringUtil.split(pathVariable, platform.fs().getPathListSeparator())) {
+                Path executable = platform.fs().getPath(entry).resolve(getExecutable(platform));
+                if (!Files.isRegularFile(executable)) {
+                    continue;
                 }
+                try {
+                    Path parent = executable.toRealPath().getParent();
+                    if (parent != null) {
+                        roots.add(parent);
+                    }
+                }
+                catch (IOException | UnsupportedOperationException e) {
+                    roots.add(executable.getParent());
+                }
+            }
+        }
+
+        for (Path root : roots) {
+            try (Stream<Path> children = Files.list(root.resolve("sdk"))) {
+                children.filter(Files::isDirectory).forEach(consumer);
+            }
+            catch (IOException ignored) {
             }
         }
     }
 
-    @Override
-    public boolean canCreatePredefinedSdks() {
-        return true;
+    private static void addRoot(@Nonnull Platform platform, @Nonnull Set<Path> roots, @Nullable String path, @Nonnull String... more) {
+        if (!StringUtil.isEmptyOrSpaces(path)) {
+            roots.add(platform.fs().getPath(path, more));
+        }
     }
 
-    @Nonnull
     @Override
-    public File getLoaderFile(@Nonnull Sdk sdk) {
-        throw new UnsupportedOperationException();
+    public boolean canCreatePredefinedSdks(@Nonnull Platform platform) {
+        return true;
     }
 }

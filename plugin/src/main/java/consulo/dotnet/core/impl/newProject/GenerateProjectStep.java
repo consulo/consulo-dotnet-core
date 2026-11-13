@@ -33,7 +33,6 @@ import consulo.project.Project;
 import consulo.project.ui.view.ProjectView;
 import consulo.project.ui.view.ProjectViewPane;
 import consulo.util.dataholder.Key;
-import consulo.util.io.FileUtil;
 import consulo.virtualFileSystem.RefreshQueue;
 import consulo.virtualFileSystem.VirtualFile;
 
@@ -72,8 +71,10 @@ public class GenerateProjectStep implements DaemonStep
 	{
 		Sdk sdk = context.getMSBuildSdk();
 
+		// the project is generated on the machine of the bundle
 		GeneralCommandLine line = new GeneralCommandLine();
-		line.setExePath(DotNetCoreBundleType.getExecutablePath(sdk.getHomePath()).getAbsolutePath());
+		line.withPlatform(sdk.getPlatform());
+		line.withExecutablePath(DotNetCoreBundleType.getExecutablePath(sdk));
 		line.addParameter("new");
 		line.addParameter(myNewProjectItem.shortName());
 		if(mySelectedLanguage != null)
@@ -83,7 +84,7 @@ public class GenerateProjectStep implements DaemonStep
 		}
 		line.addParameter("--use-program-main");
 		line.addParameter("-o");
-		line.addParameter(FileUtil.toSystemDependentName(myProject.getBasePath()));
+		line.addParameter(myProject.getBaseDir().toNioPath().toString());
 		line.addParameter("-n");
 		line.addParameter(myProject.getName());
 

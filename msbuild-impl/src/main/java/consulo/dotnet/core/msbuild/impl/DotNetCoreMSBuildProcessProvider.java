@@ -15,7 +15,6 @@ import consulo.msbuild.solution.reader.SlnProject;
 import consulo.process.cmd.GeneralCommandLine;
 import consulo.util.collection.ContainerUtil;
 import consulo.util.io.CharsetToolkit;
-import consulo.util.io.FilePermissionCopier;
 import consulo.util.io.FileUtil;
 import consulo.util.jdom.JDOMUtil;
 import consulo.util.lang.StringUtil;
@@ -28,6 +27,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -53,9 +55,9 @@ public class DotNetCoreMSBuildProcessProvider implements MSBuildProcessProvider
 	}
 
 	@Override
-	public File getBinDir(@Nonnull Sdk sdk)
+	public Path getBinDir(@Nonnull Sdk sdk)
 	{
-		return new File(sdk.getHomePath());
+		return sdk.getHomeNioPath();
 	}
 
 	@Nonnull
@@ -138,19 +140,19 @@ public class DotNetCoreMSBuildProcessProvider implements MSBuildProcessProvider
 
 	@Nonnull
 	@Override
-	public GeneralCommandLine buildCommandLine(@Nonnull Sdk msBuildSdk, @Nonnull File targetFile, int port)
+	public GeneralCommandLine buildCommandLine(@Nonnull Sdk msBuildSdk, @Nonnull Path targetFile, int port)
 	{
-		File executable = DotNetCoreBundleType.getExecutablePath(msBuildSdk.getHomePath());
-
+		// the daemon runs on the machine of the bundle
 		GeneralCommandLine c = new GeneralCommandLine();
-		c.setExePath(executable.getPath());
-		c.setWorkDirectory(msBuildSdk.getHomePath());
-		c.addParameter(targetFile.getAbsolutePath());
+		c.withPlatform(msBuildSdk.getPlatform());
+		c.withExecutablePath(DotNetCoreBundleType.getExecutablePath(msBuildSdk));
+		c.withWorkingDirectory(msBuildSdk.getHomeNioPath());
+		c.addParameter(targetFile.toString());
 		c.addParameter(String.valueOf(port));
 		c.addParameter("true"); // debug
 
 		// set exe path to original msbuild dir
-		c.withEnvironment("MSBUILD_EXE_PATH", new File(msBuildSdk.getHomePath(), "MSBuild.dll").getAbsolutePath());
+		c.withEnvironment("MSBUILD_EXE_PATH", msBuildSdk.getHomeNioPath().resolve("MSBuild.dll").toString());
 		//c.withEnvironment("MSBuildSDKsPath", new File(msBuildSdk.getHomePath(), "Sdks").getAbsolutePath());
 		return c;
 	}
@@ -174,16 +176,15 @@ public class DotNetCoreMSBuildProcessProvider implements MSBuildProcessProvider
 	}
 
 	@Override
-	public void doAdditionalCopy(@Nonnull File targetFile, @Nonnull File msBuildRunnerDir, @Nonnull Sdk msBuildSdk) throws IOException
+	public void doAdditionalCopy(@Nonnull File targetFile, @Nonnull Path msBuildRunnerDir, @Nonnull Sdk msBuildSdk) throws IOException
 	{
 		String nameWithoutExtension = FileUtil.getNameWithoutExtension(targetFile);
 
-		File msBuildRuntimeJson = new File(msBuildSdk.getHomePath(), "MSBuild" + ourRuntimeJsonSuffix);
-		if(msBuildRuntimeJson.exists())
+		// both are of the machine of the bundle
+		Path msBuildRuntimeJson = msBuildSdk.getHomeNioPath().resolve("MSBuild" + ourRuntimeJsonSuffix);
+		if(Files.exists(msBuildRuntimeJson))
 		{
-			FileUtil.copy(msBuildRuntimeJson,
-					new File(msBuildRunnerDir, nameWithoutExtension + ourRuntimeJsonSuffix),
-					FilePermissionCopier.BY_NIO2);
+			Files.copy(msBuildRuntimeJson, msBuildRunnerDir.resolve(nameWithoutExtension + ourRuntimeJsonSuffix), StandardCopyOption.REPLACE_EXISTING);
 		}
 
 		//		String depsFileName = "MSBuild" + ourDepsJsonSuffix;

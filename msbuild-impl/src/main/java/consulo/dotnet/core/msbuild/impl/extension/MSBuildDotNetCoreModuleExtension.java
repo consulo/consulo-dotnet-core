@@ -20,7 +20,6 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * @author VISTALL
@@ -52,13 +51,7 @@ public class MSBuildDotNetCoreModuleExtension extends MSBuildBaseDotNetModuleExt
         GeneralCommandLine commandLine = new GeneralCommandLine();
         String file = DotNetMacroUtil.expandOutputFile(this);
 
-        String dotNetExePath;
-        try {
-            dotNetExePath = DotNetCoreBundleType.getExecutablePath(sdk.getHomePath()).getCanonicalPath();
-        }
-        catch (IOException e) {
-            throw new ExecutionException(e);
-        }
+        String dotNetExePath = DotNetCoreBundleType.getExecutablePath(sdk).toString();
 
         if (debugConnectionInfo != null) {
             Platform platform = Platform.current();

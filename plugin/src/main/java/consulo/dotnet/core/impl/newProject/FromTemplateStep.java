@@ -55,6 +55,8 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
         if (mySelectedSdk != null) {
             myBundleBox.setSelectedBundle(mySelectedSdk);
         }
+        // the bundles of the target machine
+        bindBundleBox(myBundleBox);
 
         ComboBox<BundleBox.BundleBoxItem> component = myBundleBox.getComponent();
         builder.addLabeled("SDK:", component);
@@ -68,7 +70,11 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
             startLoad(value == null ? null : value.getBundle(), loadingLayout);
         });
 
-        component.addValueListener(valueEvent -> startLoad(valueEvent.getValue().getBundle(), loadingLayout));
+        component.addValueListener(valueEvent -> {
+            BundleBox.BundleBoxItem value = valueEvent.getValue();
+
+            startLoad(value == null ? null : value.getBundle(), loadingLayout);
+        });
     }
 
     @Override
@@ -137,8 +143,10 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
             return List.of();
         }
 
+        // the templates of the machine of the bundle
         GeneralCommandLine line = new GeneralCommandLine();
-        line.setExePath(DotNetCoreBundleType.getExecutablePath(bundle.getHomePath()).getAbsolutePath());
+        line.withPlatform(bundle.getPlatform());
+        line.withExecutablePath(DotNetCoreBundleType.getExecutablePath(bundle));
         line.addParameters("new", "list");
         try {
             ProcessOutput processOutput = CapturingProcessUtil.execAndGetOutput(line, (int) TimeUnit.MINUTES.toMillis(1));
@@ -202,6 +210,8 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
 
     @Override
     public void onStepLeave(@Nonnull FromTemplateNewModuleWizardContext context) {
+        super.onStepLeave(context);
+
         if (myBundleBox != null) {
             context.setSelectedSdk(mySdkTable.findSdk(myBundleBox.getSelectedBundleName()));
         }

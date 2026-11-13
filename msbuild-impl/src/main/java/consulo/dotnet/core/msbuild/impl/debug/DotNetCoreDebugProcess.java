@@ -25,11 +25,15 @@ import consulo.execution.debugger.dap.protocol.DAP;
 import consulo.execution.debugger.dap.protocol.DAPFactory;
 import consulo.execution.ui.ExecutionConsole;
 import consulo.execution.ui.console.TextConsoleBuilderFactory;
+import consulo.platform.ForwardedPort;
+import consulo.platform.Platform;
 import consulo.process.ProcessHandler;
 import consulo.util.lang.lazy.LazyValue;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Collection;
 import java.util.function.Supplier;
 
@@ -40,6 +44,9 @@ import java.util.function.Supplier;
 public class DotNetCoreDebugProcess extends DAPDebugProcess implements DotNetDebugProcess {
     private final String myHost;
     private final int myPort;
+    private final Platform myPlatform;
+    @Nullable
+    private ForwardedPort myForwardedPort;
 
     private ExecutionResult myResult;
     private final RunProfile myRunProfile;
@@ -52,7 +59,8 @@ public class DotNetCoreDebugProcess extends DAPDebugProcess implements DotNetDeb
     public DotNetCoreDebugProcess(@Nonnull XDebugSession session,
                                   @Nonnull RunProfile runProfile,
                                   String host,
-                                  int port) {
+                                  int port,
+                                  @Nonnull Platform platform) {
         super(session);
 
         myRunProfile = runProfile;
@@ -60,6 +68,7 @@ public class DotNetCoreDebugProcess extends DAPDebugProcess implements DotNetDeb
         myLogicValueViewsLazy = LazyValue.notNull(this::createLogicValueViews);
         myHost = host;
         myPort = port;
+        myPlatform = platform;
     }
 
     @Override
@@ -92,7 +101,29 @@ public class DotNetCoreDebugProcess extends DAPDebugProcess implements DotNetDeb
 
     @Override
     protected DAP createDAP(DAPFactory factory) {
-        return factory.createSocketDAP(myHost, myPort);
+        if (myPlatform == Platform.current()) {
+            return factory.createSocketDAP(myHost, myPort);
+        }
+
+        // the debugger listens on its machine
+        try {
+            ForwardedPort forwardedPort = myPlatform.net().forward(myHost, myPort);
+            myForwardedPort = forwardedPort;
+            return factory.createSocketDAP(forwardedPort.host(), forwardedPort.port());
+        }
+        catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    @Override
+    protected void stopImpl() {
+        super.stopImpl();
+
+        ForwardedPort forwardedPort = myForwardedPort;
+        if (forwardedPort != null) {
+            forwardedPort.close();
+        }
     }
 
     @Override

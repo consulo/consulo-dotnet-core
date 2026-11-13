@@ -153,6 +153,16 @@ public class DotNetCoreMSBuildProcessProvider implements MSBuildProcessProvider
 
 		// set exe path to original msbuild dir
 		c.withEnvironment("MSBUILD_EXE_PATH", msBuildSdk.getHomeNioPath().resolve("MSBuild.dll").toString());
+
+		// the dotnet of the bundle for the tools the build starts (the compiler) - as the dotnet cli sets it, an installation
+		// out of the default location (~/.dotnet) is not found otherwise
+		Path dotnet = DotNetCoreBundleType.getExecutablePath(msBuildSdk);
+		c.withEnvironment("DOTNET_HOST_PATH", dotnet.toString());
+		Path dotnetRoot = dotnet.getParent();
+		if(dotnetRoot != null)
+		{
+			c.withEnvironment("DOTNET_ROOT", dotnetRoot.toString());
+		}
 		//c.withEnvironment("MSBuildSDKsPath", new File(msBuildSdk.getHomePath(), "Sdks").getAbsolutePath());
 		return c;
 	}

@@ -1,5 +1,6 @@
 package consulo.dotnet.core.msbuild.impl.extension;
 
+import consulo.application.platform.PlatformTransfer;
 import consulo.container.plugin.PluginManager;
 import consulo.content.bundle.Sdk;
 import consulo.content.bundle.SdkType;
@@ -19,7 +20,10 @@ import consulo.process.cmd.GeneralCommandLine;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.PosixFilePermissions;
 
 /**
  * @author VISTALL
@@ -41,45 +45,55 @@ public class MSBuildDotNetCoreModuleExtension extends MSBuildBaseDotNetModuleExt
     public DotNetDebugProcess createDebuggerProcess(@Nonnull XDebugSession session,
                                                     @Nonnull RunProfile runProfile,
                                                     @Nonnull DebugConnectionInfo info) {
-        return new DotNetCoreDebugProcess(session, runProfile, info.getHost(), info.getPort());
+        Sdk sdk = getSdk();
+        // the debugger runs on the machine of the bundle
+        Platform platform = sdk != null ? sdk.getPlatform() : Platform.current();
+        return new DotNetCoreDebugProcess(session, runProfile, info.getHost(), info.getPort(), platform);
     }
 
     @Nonnull
     @Override
     public GeneralCommandLine createDefaultCommandLine(@Nonnull Sdk sdk,
                                                        @Nullable DebugConnectionInfo debugConnectionInfo) throws ExecutionException {
+        // the program runs on the machine of the bundle
         GeneralCommandLine commandLine = new GeneralCommandLine();
+        commandLine.withPlatform(sdk.getPlatform());
         String file = DotNetMacroUtil.expandOutputFile(this);
 
         String dotNetExePath = DotNetCoreBundleType.getExecutablePath(sdk).toString();
 
         if (debugConnectionInfo != null) {
-            Platform platform = Platform.current();
+            // the debugger of the machine of the bundle - bundled for its system, copied there
+            Platform platform = sdk.getPlatform();
             PlatformOperatingSystem os = platform.os();
 
             String exePath = os.isWindows() ? "netcoredbg.exe" : "netcoredbg";
-            String dirPath = platform.os().fileNamePrefix() + "-netcoredbg" + platform.jvm().arch().fileNameSuffix();
+            String dirPath = os.fileNamePrefix() + "-netcoredbg" + platform.jvm().arch().fileNameSuffix();
 
-            File pluginPath = PluginManager.getPluginPath(MSBuildDotNetCoreModuleExtension.class);
-
-            File fullPath = new File(new File(pluginPath, dirPath), exePath);
-
-            if (!fullPath.exists()) {
-                throw new ExecutionException("Debug not supported. Path not exists: " + fullPath);
+            Path localDir = PluginManager.getPluginPath(MSBuildDotNetCoreModuleExtension.class).toPath().resolve(dirPath);
+            if (!Files.isDirectory(localDir)) {
+                throw new ExecutionException("Debug not supported. Path not exists: " + localDir);
             }
 
-            if (!os.isWindows() && !fullPath.canExecute()) {
-                fullPath.setExecutable(true);
+            Path fullPath;
+            try {
+                fullPath = PlatformTransfer.getInstance().transfer(localDir, platform).resolve(exePath);
+                if (!os.isWindows() && !Files.isExecutable(fullPath)) {
+                    Files.setAttribute(fullPath, "posix:permissions", PosixFilePermissions.fromString("rwxr-xr-x"));
+                }
+            }
+            catch (IOException e) {
+                throw new ExecutionException(e);
             }
 
-            commandLine.setExecutable(fullPath.toPath());
+            commandLine.withExecutablePath(fullPath);
             commandLine.addParameter("--interpreter=vscode");
             commandLine.addParameter("--server=" + debugConnectionInfo.getPort());
             commandLine.addParameter("--");
             commandLine.addParameter(dotNetExePath);
             commandLine.addParameter(file);
         } else {
-            commandLine.setExePath(dotNetExePath);
+            commandLine.withExecutablePath(DotNetCoreBundleType.getExecutablePath(sdk));
             commandLine.addParameter(file);
         }
 

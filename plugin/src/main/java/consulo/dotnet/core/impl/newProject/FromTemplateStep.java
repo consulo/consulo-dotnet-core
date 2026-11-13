@@ -22,6 +22,7 @@ import consulo.ui.util.FormBuilder;
 import consulo.ui.util.ShowNotifier;
 
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -39,6 +40,11 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
     private String mySelectedSdk;
 
     private NewProjectItem mySelectedItem;
+
+    // the bundle whose templates are shown - loaded once per bundle
+    private boolean myLoadStarted;
+    @Nullable
+    private Sdk myLoadedBundle;
     private String mySelectedLanguage;
 
     public FromTemplateStep(FromTemplateNewModuleWizardContext context, SdkTable sdkTable) {
@@ -75,6 +81,12 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
 
             startLoad(value == null ? null : value.getBundle(), loadingLayout);
         });
+        // the bundles of another machine may leave nothing selected - without a change of the value
+        addPlatformListener(platform -> {
+            BundleBox.BundleBoxItem value = component.getValue();
+
+            startLoad(value == null ? null : value.getBundle(), loadingLayout);
+        });
     }
 
     @Override
@@ -87,11 +99,14 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
     }
 
     @RequiredUIAccess
-    private void startLoad(Sdk bundle, LoadingLayout<DockLayout> layout) {
-        if (bundle == null) {
+    private void startLoad(@Nullable Sdk bundle, LoadingLayout<DockLayout> layout) {
+        if (myLoadStarted && myLoadedBundle == bundle) {
             return;
         }
+        myLoadStarted = true;
+        myLoadedBundle = bundle;
 
+        // no bundle - no templates, the ones of the previous bundle go
         mySelectedItem = null;
 
         layout.startLoading(
@@ -138,7 +153,7 @@ public class FromTemplateStep extends UnifiedProjectOrModuleNameStep<FromTemplat
         );
     }
 
-    private List<NewProjectItem> load(Sdk bundle) {
+    private List<NewProjectItem> load(@Nullable Sdk bundle) {
         if (bundle == null) {
             return List.of();
         }

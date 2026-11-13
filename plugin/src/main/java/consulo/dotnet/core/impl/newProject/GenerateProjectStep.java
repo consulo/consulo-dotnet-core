@@ -34,13 +34,12 @@ import consulo.project.ui.view.ProjectView;
 import consulo.project.ui.view.ProjectViewPane;
 import consulo.util.dataholder.Key;
 import consulo.util.io.FileUtil;
-import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.RefreshQueue;
 import consulo.virtualFileSystem.VirtualFile;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -108,7 +107,7 @@ public class GenerateProjectStep implements DaemonStep
 			throw new IOException(e);
 		}
 
-		LocalFileSystem.getInstance().refreshFiles(List.of(myProject.getBaseDir()), false, true, () ->
+		RefreshQueue.getInstance().refresh(false, true, () ->
 		{
 			Set<String> projectExtensions = MSBuildProjectFile.listAll(myProject.getApplication());
 
@@ -171,7 +170,7 @@ public class GenerateProjectStep implements DaemonStep
 					}
 				}
 			});
-		});
+		}, myProject.getBaseDir());
 	}
 
 	@Override

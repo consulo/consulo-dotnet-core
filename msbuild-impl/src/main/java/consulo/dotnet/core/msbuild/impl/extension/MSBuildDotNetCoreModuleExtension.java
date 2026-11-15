@@ -68,7 +68,7 @@ public class MSBuildDotNetCoreModuleExtension extends MSBuildBaseDotNetModuleExt
             PlatformOperatingSystem os = platform.os();
 
             String exePath = os.isWindows() ? "netcoredbg.exe" : "netcoredbg";
-            String dirPath = os.fileNamePrefix() + "-netcoredbg" + platform.jvm().arch().fileNameSuffix();
+            String dirPath = os.fileNamePrefix() + "-netcoredbg" + platform.os().arch().fileNameSuffix();
 
             Path localDir = PluginManager.getPluginPath(MSBuildDotNetCoreModuleExtension.class).toPath().resolve(dirPath);
             if (!Files.isDirectory(localDir)) {

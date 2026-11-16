@@ -4,7 +4,7 @@ import consulo.annotation.access.RequiredReadAction;
 import consulo.dotnet.debugger.DotNetDebuggerProvider;
 import consulo.dotnet.debugger.DotNetDebuggerProviders;
 import consulo.dotnet.module.extension.DotNetModuleLangExtension;
-import consulo.execution.configuration.ModuleRunConfiguration;
+import consulo.execution.configuration.ModuleRunProfile;
 import consulo.execution.configuration.RunProfile;
 import consulo.execution.debug.XDebugSession;
 import consulo.execution.debug.XSourcePosition;
@@ -41,8 +41,9 @@ public class DotNetEditorsProvider2 extends XDebuggerEditorsProviderBase {
 
     @Nonnull
     private static LanguageFileType findLanguageFileType(RunProfile runProfile) {
-        if (runProfile instanceof ModuleRunConfiguration moduleRunConfiguration) {
-            Module[] modules = moduleRunConfiguration.getModules();
+        // like DotNetDebugContext: a run profile of other build systems (e.g. Bazel) knows its modules without being a module run configuration
+        if (runProfile instanceof ModuleRunProfile moduleRunProfile) {
+            Module[] modules = moduleRunProfile.getModules();
             for (Module module : modules) {
                 DotNetModuleLangExtension extension = module.getExtension(DotNetModuleLangExtension.class);
                 if (extension != null) {

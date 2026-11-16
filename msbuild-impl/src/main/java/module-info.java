@@ -17,4 +17,5 @@ module consulo.dotnet.core.msbuild.impl {
 
     exports consulo.dotnet.core.msbuild.impl;
     exports consulo.dotnet.core.msbuild.impl.extension;
+    exports consulo.dotnet.core.msbuild.impl.debug;
 }
